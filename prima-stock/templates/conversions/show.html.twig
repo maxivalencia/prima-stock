@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversions{% endblock %}
+
+{% block body %}
+    <h1>Conversions</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ conversion.id }}</td>
+            </tr>
+            <tr>
+                <th>Valeur</th>
+                <td>{{ conversion.valeur }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('conversions_index') }}">back to list</a>
+
+    <a href="{{ path('conversions_edit', {'id': conversion.id}) }}">edit</a>
+
+    {{ include('conversions/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversions index{% endblock %}
+
+{% block body %}
+    <h1>Conversions index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Valeur</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for conversion in conversions %}
+            <tr>
+                <td>{{ conversion.id }}</td>
+                <td>{{ conversion.valeur }}</td>
+                <td>
+                    <a href="{{ path('conversions_show', {'id': conversion.id}) }}">show</a>
+                    <a href="{{ path('conversions_edit', {'id': conversion.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('conversions_new') }}">Create new</a>
+{% endblock %}

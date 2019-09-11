@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Conversions{% endblock %}
+
+{% block body %}
+    <h1>Create new Conversions</h1>
+
+    {{ include('conversions/_form.html.twig') }}
+
+    <a href="{{ path('conversions_index') }}">back to list</a>
+{% endblock %}

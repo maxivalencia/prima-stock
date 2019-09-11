@@ -3,10 +3,190 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link href="/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="/css/style.css">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="container-scroller">
+            <!-- partial:partials/_navbar.html -->
+            <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper">
+                <a class="navbar-brand brand-logo" href="index.html"><img src="images/logo.svg" alt="logo"></a>
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo_mini.svg" alt="logo"></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center">
+                <p class="page-name d-none d-lg-block">PRIMA-STOCK</p>
+                <ul class="navbar-nav ml-lg-auto">
+                <li class="nav-item">
+                    <form class="mt-2 mt-md-0 d-none d-lg-block search-input">
+                    <div class="input-group">
+                        <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                        <input type="text" class="form-control" placeholder="Search...">
+                    </div>
+                    </form>
+                </li>
+                <li class="nav-item lang-dropdown d-none d-sm-block">
+                    <a class="nav-link" href="#">
+                    <p class="mb-0">Déconnection <i class="flag-icon flag-icon-gb"></i></p>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-sm-block profile-img">
+                    <a class="nav-link profile-image" href="#">
+                    <img src="images/faces/face4.jpg" alt="profile-img">
+                    <span class="online-status online bg-success"></span>
+                    </a>
+                </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center ml-auto" type="button" data-toggle="offcanvas">
+                <span class="icon-menu icons"></span>
+                </button>
+            </div>
+            </nav>
+
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+        <div class="row row-offcanvas row-offcanvas-right">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item nav-category">
+                <span class="nav-link">GESTION</span>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span class="menu-title">Nouveau</span>
+                    <i class="icon-speedometer menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span class="menu-title">Saisie</span>
+                    <i class="icon-speedometer menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <span class="menu-title">Validation</span>
+                    <i class="icon-wrench menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item nav-category">
+                <span class="nav-link">ADMINISTRATION</span>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('stocks_index') }}">
+                    <span class="menu-title">Historique</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('user_index') }}">
+                    <span class="menu-title">Utilisateurs</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('access_index') }}">
+                    <span class="menu-title">Accès</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('clients_index') }}">
+                    <span class="menu-title">Clients</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('projet_index') }}">
+                    <span class="menu-title">Projet</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('unites_index') }}">
+                    <span class="menu-title">Unités</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('conversions_index') }}">
+                    <span class="menu-title">Conversion</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('autorisations_index') }}">
+                    <span class="menu-title">Autorisation</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('produits_index') }}">
+                    <span class="menu-title">Produit</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('type_produits_index') }}">
+                    <span class="menu-title">Type de produit</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('mouvements_index') }}">
+                    <span class="menu-title">Mouvement</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('piece_jointe_index') }}">
+                    <span class="menu-title">Pièce-jointe</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('validations_index') }}">
+                    <span class="menu-title">Validation</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('etats_index') }}">
+                    <span class="menu-title">Etat</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li>
+            </ul>
+            </nav>
+            <!-- partial -->
+            <!-- partial -->
+            <div class="content-wrapper">
+            <div class="row">
+
+            {% block body %}{% endblock %}
+
+            </div>
+            </div>
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer">
+            <div class="container-fluid clearfix">
+                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 <a href="http://www.bootstrapdash.com/" target="_blank">A-Z system</a>. All rights reserved.</span>
+                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">contact@mail.mg<i class="mdi mdi-heart text-danger"></i></span>
+            </div>
+            </footer>
+            <!-- partial -->
+        </div>
+
+        <script src="/dist/js/bootstrap.min.js"></script>
+        <!-- inject:js -->
+        <script src="/js/off-canvas.js"></script>
+        <script src="/js/misc.js"></script>
+        <!-- endinject -->
+        <!-- Custom js for this page-->
+        <script src="/js/dashboard.js"></script>
+        <!-- End custom js for this page-->
         {% block javascripts %}{% endblock %}
     </body>
 </html>

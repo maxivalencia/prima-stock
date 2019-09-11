@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stocks index{% endblock %}
+
+{% block body %}
+    <h1>Stocks index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Quantite</th>
+                <th>CauseAnnulation</th>
+                <th>DateSaisie</th>
+                <th>DateValidation</th>
+                <th>ReferencePanier</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td>
+                <td>{{ stock.quantite }}</td>
+                <td>{{ stock.causeAnnulation }}</td>
+                <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ stock.referencePanier }}</td>
+                <td>
+                    <a href="{{ path('stocks_show', {'id': stock.id}) }}">show</a>
+                    <a href="{{ path('stocks_edit', {'id': stock.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('stocks_new') }}">Create new</a>
+{% endblock %}
