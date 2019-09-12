@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/access")
@@ -18,10 +19,15 @@ class AccessController extends AbstractController
     /**
      * @Route("/", name="access_index", methods={"GET"})
      */
-    public function index(AccessRepository $accessRepository): Response
+    public function index(AccessRepository $accessRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $accessRepository->findAll(), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
         return $this->render('access/index.html.twig', [
-            'accesses' => $accessRepository->findAll(),
+            'accesses' => $pagination,
         ]);
     }
 
