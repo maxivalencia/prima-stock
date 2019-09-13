@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Mouvements{% endblock %}
+{% block title %}Edition Mouvements{% endblock %}
 
 {% block body %}
-    <h1>Edit Mouvements</h1>
+<div class="container">
+    <div class="row">
+        <h1>Edition Mouvements</h1>
+    </div>
 
-    {{ include('mouvements/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('mouvements/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('mouvements_index') }}">back to list</a>
+    <a href="{{ path('mouvements_index') }}">Retour</a>
 
     {{ include('mouvements/_delete_form.html.twig') }}
+</div>
 {% endblock %}

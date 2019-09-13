@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New PieceJointe{% endblock %}
+{% block title %}Nouvelle Piece-Jointe{% endblock %}
 
 {% block body %}
-    <h1>Create new PieceJointe</h1>
+<div class="container">
+    <div class="row">
+        <h1>Création Piece-Jointe</h1>
+    </div>
+
+    <br /><br />
 
     {{ include('piece_jointe/_form.html.twig') }}
 
-    <a href="{{ path('piece_jointe_index') }}">back to list</a>
+    <a href="{{ path('piece_jointe_index') }}">Retour</a>
+</div>
 {% endblock %}

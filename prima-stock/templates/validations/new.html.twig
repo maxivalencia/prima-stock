@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Validations{% endblock %}
+{% block title %}Nouvelle Validation{% endblock %}
 
 {% block body %}
-    <h1>Create new Validations</h1>
+<div class="container">
+    <div class="row">
+        <h1>Création Validation</h1>
+    </div>
+
+    <br /><br />
 
     {{ include('validations/_form.html.twig') }}
 
-    <a href="{{ path('validations_index') }}">back to list</a>
+    <a href="{{ path('validations_index') }}">Retour</a>
+</div>
 {% endblock %}

@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}TypeProduits index{% endblock %}
+{% block title %}Type de Produits Liste{% endblock %}
 
 {% block body %}
-    <h1>TypeProduits index</h1>
+<div class="container">
+    <div class="row">
+        <h1>Types des Produit</h1>
+    </div>
 
     <table class="table">
         <thead>
@@ -19,17 +22,18 @@
                 <td>{{ type_produit.id }}</td>
                 <td>{{ type_produit.type }}</td>
                 <td>
-                    <a href="{{ path('type_produits_show', {'id': type_produit.id}) }}">show</a>
+                    <a href="{{ path('type_produits_show', {'id': type_produit.id}) }}">voir</a>
                     <a href="{{ path('type_produits_edit', {'id': type_produit.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucun enregistrement trouver!</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('type_produits_new') }}">Create new</a>
+    <a href="{{ path('type_produits_new') }}">Créer</a>
+</div>
 {% endblock %}

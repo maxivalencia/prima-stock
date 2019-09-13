@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Conversions{% endblock %}
+{% block title %}Nouvelle Conversion{% endblock %}
 
 {% block body %}
-    <h1>Create new Conversions</h1>
+<div class="container">
+    <div class="row">
+        <h1>Création Conversion</h1>
+    </div>
+
+    <br /><br />
 
     {{ include('conversions/_form.html.twig') }}
 
-    <a href="{{ path('conversions_index') }}">back to list</a>
+    <a href="{{ path('conversions_index') }}">Retour</a>
+</div>
 {% endblock %}

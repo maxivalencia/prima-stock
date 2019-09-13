@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mouvements index{% endblock %}
+{% block title %}Mouvements Liste{% endblock %}
 
 {% block body %}
-    <h1>Mouvements index</h1>
+<div class="container">
+    <div class="row">
+        <h1>Mouvements</h1>
+    </div>
 
     <table class="table">
         <thead>
@@ -19,17 +22,18 @@
                 <td>{{ mouvement.id }}</td>
                 <td>{{ mouvement.type }}</td>
                 <td>
-                    <a href="{{ path('mouvements_show', {'id': mouvement.id}) }}">show</a>
+                    <a href="{{ path('mouvements_show', {'id': mouvement.id}) }}">voir</a>
                     <a href="{{ path('mouvements_edit', {'id': mouvement.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucun enregistrement trouver!</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('mouvements_new') }}">Create new</a>
+    <a href="{{ path('mouvements_new') }}">Créer</a>
+</div>
 {% endblock %}

@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Autorisations{% endblock %}
+{% block title %}Autorisation{% endblock %}
 
 {% block body %}
-    <h1>Autorisations</h1>
+<div class="container">
+    <div class="row">
+        <h1>Autorisation</h1>
+    </div>
 
     <table class="table">
         <tbody>
@@ -14,9 +17,10 @@
         </tbody>
     </table>
 
-    <a href="{{ path('autorisations_index') }}">back to list</a>
+    <a href="{{ path('autorisations_index') }}">Retour</a>
 
-    <a href="{{ path('autorisations_edit', {'id': autorisation.id}) }}">edit</a>
+    <a href="{{ path('autorisations_edit', {'id': autorisation.id}) }}">Edition</a>
 
     {{ include('autorisations/_delete_form.html.twig') }}
+</div>
 {% endblock %}

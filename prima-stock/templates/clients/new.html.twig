@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Clients{% endblock %}
+{% block title %}Nouveau Client{% endblock %}
 
 {% block body %}
-    <h1>Create new Clients</h1>
+<div class="container">
+    <div class="row">
+        <h1>Création Client</h1>
+    </div>
+
+    <br /><br />
 
     {{ include('clients/_form.html.twig') }}
 
-    <a href="{{ path('clients_index') }}">back to list</a>
+    <a href="{{ path('clients_index') }}">Retour</a>
+</div>
 {% endblock %}

@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Etats{% endblock %}
+{% block title %}Edition Etats{% endblock %}
 
 {% block body %}
-    <h1>Edit Etats</h1>
+<div class="container">
+    <div class="row">
+        <h1>Edition Etats</h1>
+    </div>
 
-    {{ include('etats/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('etats/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('etats_index') }}">back to list</a>
+    <a href="{{ path('etats_index') }}">Retour</a>
 
     {{ include('etats/_delete_form.html.twig') }}
+</div>
 {% endblock %}

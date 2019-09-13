@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Autorisations{% endblock %}
+{% block title %}Nouvelle Autorisations{% endblock %}
 
 {% block body %}
-    <h1>Create new Autorisations</h1>
+<div class="container">
+    <div class="row">
+        <h1>Création Autorisation</h1>
+    </div>
+
+    <br /><br />
 
     {{ include('autorisations/_form.html.twig') }}
 
-    <a href="{{ path('autorisations_index') }}">back to list</a>
+    <a href="{{ path('autorisations_index') }}">Retour</a>
+</div>
 {% endblock %}

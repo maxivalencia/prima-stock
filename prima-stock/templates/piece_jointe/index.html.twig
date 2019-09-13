@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PieceJointe index{% endblock %}
+{% block title %}Piece-Jointe Liste{% endblock %}
 
 {% block body %}
-    <h1>PieceJointe index</h1>
+<div class="container">
+    <div class="row">
+        <h1>Piece-Jointes</h1>
+    </div>
 
     <table class="table">
         <thead>
@@ -23,17 +26,18 @@
                 <td>{{ piece_jointe.nomServer }}</td>
                 <td>{{ piece_jointe.reference }}</td>
                 <td>
-                    <a href="{{ path('piece_jointe_show', {'id': piece_jointe.id}) }}">show</a>
+                    <a href="{{ path('piece_jointe_show', {'id': piece_jointe.id}) }}">voir</a>
                     <a href="{{ path('piece_jointe_edit', {'id': piece_jointe.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucun enregistrement trouver!</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('piece_jointe_new') }}">Create new</a>
+    <a href="{{ path('piece_jointe_new') }}">Créer</a>
+</div>
 {% endblock %}

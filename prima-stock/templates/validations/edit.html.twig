@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Validations{% endblock %}
+{% block title %}Edition Validation{% endblock %}
 
 {% block body %}
-    <h1>Edit Validations</h1>
+<div class="container">
+    <div class="row">
+        <h1>Edition Validation</h1>
+    </div>
 
-    {{ include('validations/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('validations/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('validations_index') }}">back to list</a>
+    <a href="{{ path('validations_index') }}">Retour</a>
 
     {{ include('validations/_delete_form.html.twig') }}
+</div>
 {% endblock %}

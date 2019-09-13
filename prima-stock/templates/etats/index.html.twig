@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Etats index{% endblock %}
+{% block title %}Etats Liste{% endblock %}
 
 {% block body %}
-    <h1>Etats index</h1>
+<div class="container">
+    <div class="row">
+        <h1>Etats</h1>
+    </div>
 
     <table class="table">
         <thead>
@@ -19,17 +22,18 @@
                 <td>{{ etat.id }}</td>
                 <td>{{ etat.etat }}</td>
                 <td>
-                    <a href="{{ path('etats_show', {'id': etat.id}) }}">show</a>
+                    <a href="{{ path('etats_show', {'id': etat.id}) }}">voir</a>
                     <a href="{{ path('etats_edit', {'id': etat.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucun enregistrement trouver!</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('etats_new') }}">Create new</a>
+    <a href="{{ path('etats_new') }}">Créer</a>
+</div>
 {% endblock %}

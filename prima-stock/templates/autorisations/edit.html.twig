@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Autorisations{% endblock %}
+{% block title %}Edition Autorisation{% endblock %}
 
 {% block body %}
-    <h1>Edit Autorisations</h1>
+<div class="container">
+    <div class="row">
+        <h1>Edition Autorisation</h1>
+    </div>
 
-    {{ include('autorisations/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('autorisations/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('autorisations_index') }}">back to list</a>
+    <a href="{{ path('autorisations_index') }}">Retour</a>
 
     {{ include('autorisations/_delete_form.html.twig') }}
+</div>
 {% endblock %}

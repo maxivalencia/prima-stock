@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit TypeProduits{% endblock %}
+{% block title %}Edition Type de Produits{% endblock %}
 
 {% block body %}
-    <h1>Edit TypeProduits</h1>
+<div class="container">
+    <div class="row">
+        <h1>Edition Type de Produits</h1>
+    </div>
 
-    {{ include('type_produits/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('type_produits/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('type_produits_index') }}">back to list</a>
+    <a href="{{ path('type_produits_index') }}">Retour</a>
 
     {{ include('type_produits/_delete_form.html.twig') }}
+</div>
 {% endblock %}

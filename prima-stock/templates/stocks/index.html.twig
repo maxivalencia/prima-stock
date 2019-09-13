@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Stocks index{% endblock %}
+{% block title %}Stocks Liste{% endblock %}
 
 {% block body %}
-    <h1>Stocks index</h1>
+<div class="container">
+    <div class="row">
+        <h1>Stocks</h1>
+    </div>
 
     <table class="table">
         <thead>
@@ -27,17 +30,18 @@
                 <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ stock.referencePanier }}</td>
                 <td>
-                    <a href="{{ path('stocks_show', {'id': stock.id}) }}">show</a>
+                    <a href="{{ path('stocks_show', {'id': stock.id}) }}">voir</a>
                     <a href="{{ path('stocks_edit', {'id': stock.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="7">Aucun enregistrement trouver!</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('stocks_new') }}">Create new</a>
+    <a href="{{ path('stocks_new') }}">Créer</a>
+</div>
 {% endblock %}

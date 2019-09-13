@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Access{% endblock %}
+{% block title %}Nouveau Access{% endblock %}
 
 {% block body %}
-    <h1>Create new Access</h1>
+<div class="container">
+    <div class="row">
+        <h1>Création Acces</h1>
+    </div>
+    <br /><br />
+    <div class="row">
+        {{ include('access/_form.html.twig') }}
 
-    {{ include('access/_form.html.twig') }}
-
-    <a href="{{ path('access_index') }}">back to list</a>
+        <a href="{{ path('access_index') }}">Retour</a>
+    </div>
+</div>
 {% endblock %}

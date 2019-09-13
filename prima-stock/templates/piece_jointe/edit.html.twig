@@ -3,11 +3,15 @@
 {% block title %}Edit PieceJointe{% endblock %}
 
 {% block body %}
-    <h1>Edit PieceJointe</h1>
+<div class="container">
+    <div class="row">
+        <h1>Edition Piece-Jointe</h1>
+    </div>
 
-    {{ include('piece_jointe/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('piece_jointe/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('piece_jointe_index') }}">back to list</a>
+    <a href="{{ path('piece_jointe_index') }}">Retour</a>
 
     {{ include('piece_jointe/_delete_form.html.twig') }}
+</div>
 {% endblock %}
