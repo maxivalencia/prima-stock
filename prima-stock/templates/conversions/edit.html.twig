@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Edition Conversion</h1>
     </div>
+    <hr>
 
     {{ include('conversions/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <a href="{{ path('conversions_index') }}">Retour</a>
-
+    <br>
+    <a href="{{ path('conversions_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
     {{ include('conversions/_delete_form.html.twig') }}
 </div>
 {% endblock %}

@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Edition Client</h1>
     </div>
+    <hr>
 
     {{ include('clients/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <a href="{{ path('clients_index') }}">Retour</a>
-
+    <br>
+    <a href="{{ path('clients_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
     {{ include('clients/_delete_form.html.twig') }}
 </div>
 {% endblock %}

@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création Utilistateur</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('user/_form.html.twig') }}
-
-    <a href="{{ path('user_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('user_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

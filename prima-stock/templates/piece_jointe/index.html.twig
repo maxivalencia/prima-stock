@@ -7,6 +7,7 @@
     <div class="row">
         <h1>Piece-Jointes</h1>
     </div>
+    <hr>
 
     <table class="table">
         <thead>
@@ -26,8 +27,8 @@
                 <td>{{ piece_jointe.nomServer }}</td>
                 <td>{{ piece_jointe.reference }}</td>
                 <td>
-                    <a href="{{ path('piece_jointe_show', {'id': piece_jointe.id}) }}">voir</a>
-                    <a href="{{ path('piece_jointe_edit', {'id': piece_jointe.id}) }}">edit</a>
+                    <a href="{{ path('piece_jointe_show', {'id': piece_jointe.id}) }}" class="btn btn-warning">voir</a>
+                    <a href="{{ path('piece_jointe_edit', {'id': piece_jointe.id}) }}" class="btn btn-danger">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -38,6 +39,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('piece_jointe_new') }}">Créer</a>
+    <a href="{{ path('piece_jointe_new') }}" class="btn btn-success">Créer</a>
 </div>
 {% endblock %}

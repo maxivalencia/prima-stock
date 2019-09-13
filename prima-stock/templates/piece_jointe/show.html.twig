@@ -7,6 +7,7 @@
     <div class="row">
         <h1>Piece-Jointe</h1>
     </div>
+    <hr>
 
     <table class="table">
         <tbody>
@@ -29,10 +30,10 @@
         </tbody>
     </table>
 
-    <a href="{{ path('piece_jointe_index') }}">Retour</a>
-
-    <a href="{{ path('piece_jointe_edit', {'id': piece_jointe.id}) }}">Edition</a>
-
+    <a href="{{ path('piece_jointe_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
+    <a href="{{ path('piece_jointe_edit', {'id': piece_jointe.id}) }}" class="btn btn-warning">Edition</a>
+    <br><br>
     {{ include('piece_jointe/_delete_form.html.twig') }}
 </div>
 {% endblock %}

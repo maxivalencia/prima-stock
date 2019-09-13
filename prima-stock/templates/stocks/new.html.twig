@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création nouveau Stocks</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('stocks/_form.html.twig') }}
-
-    <a href="{{ path('stocks_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('stocks_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

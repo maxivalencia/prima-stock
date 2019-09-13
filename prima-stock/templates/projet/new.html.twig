@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création nouveau Projet</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('projet/_form.html.twig') }}
-
-    <a href="{{ path('projet_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('projet_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

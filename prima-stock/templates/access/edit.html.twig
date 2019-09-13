@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Edition Access</h1>
     </div>
+    <hr>
 
     {{ include('access/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <a href="{{ path('access_index') }}">Retour</a>
-
+    <br>
+    <a href="{{ path('access_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
     {{ include('access/_delete_form.html.twig') }}
 </div>
 {% endblock %}

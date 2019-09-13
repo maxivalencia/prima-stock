@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création Etat</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('etats/_form.html.twig') }}
-
-    <a href="{{ path('etats_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('etats_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

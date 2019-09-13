@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création Autorisation</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('autorisations/_form.html.twig') }}
-
-    <a href="{{ path('autorisations_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('autorisations_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

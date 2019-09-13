@@ -7,6 +7,7 @@
     <div class="row">
         <h1>Unités</h1>
     </div>
+    <hr>
 
     <table class="table">
         <thead>
@@ -24,8 +25,8 @@
                 <td>{{ unite.nom }}</td>
                 <td>{{ unite.sigle }}</td>
                 <td>
-                    <a href="{{ path('unites_show', {'id': unite.id}) }}">voir</a>
-                    <a href="{{ path('unites_edit', {'id': unite.id}) }}">edit</a>
+                    <a href="{{ path('unites_show', {'id': unite.id}) }}" class="btn btn-warning">voir</a>
+                    <a href="{{ path('unites_edit', {'id': unite.id}) }}" class="btn btn-danger">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -36,6 +37,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('unites_new') }}">Créer</a>
+    <a href="{{ path('unites_new') }}" class="btn btn-success">Créer</a>
 </div>
 {% endblock %}

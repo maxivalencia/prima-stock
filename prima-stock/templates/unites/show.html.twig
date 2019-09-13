@@ -7,6 +7,7 @@
     <div class="row">
         <h1>Unité</h1>
     </div>
+    <hr>
 
     <table class="table">
         <tbody>
@@ -25,10 +26,10 @@
         </tbody>
     </table>
 
-    <a href="{{ path('unites_index') }}">Retour</a>
-
-    <a href="{{ path('unites_edit', {'id': unite.id}) }}">Edition</a>
-
+    <a href="{{ path('unites_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
+    <a href="{{ path('unites_edit', {'id': unite.id}) }}" class="btn btn-warning">Edition</a>
+    <br><br>
     {{ include('unites/_delete_form.html.twig') }}
 </div>
 {% endblock %}

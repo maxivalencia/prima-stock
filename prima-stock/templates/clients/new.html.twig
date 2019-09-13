@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création Client</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('clients/_form.html.twig') }}
-
-    <a href="{{ path('clients_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('clients_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

@@ -7,11 +7,13 @@
     <div class="row">
         <h1>Création Acces</h1>
     </div>
-    <br /><br />
-    <div class="row">
-        {{ include('access/_form.html.twig') }}
+    <hr>
 
-        <a href="{{ path('access_index') }}">Retour</a>
-    </div>
+    <br /><br />
+    
+    {{ include('access/_form.html.twig') }}
+    <br>
+    <a href="{{ path('access_index') }}" class="btn btn-primary">Retour</a>
+
 </div>
 {% endblock %}

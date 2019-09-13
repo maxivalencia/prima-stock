@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création Mouvement</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('mouvements/_form.html.twig') }}
-
-    <a href="{{ path('mouvements_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('mouvements_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

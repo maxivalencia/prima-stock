@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Edition Utilisateur</h1>
     </div>
+    <hr>
 
     {{ include('user/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <a href="{{ path('user_index') }}">Retour</a>
-
+    <br>
+    <a href="{{ path('user_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
     {{ include('user/_delete_form.html.twig') }}
 </div>
 {% endblock %}

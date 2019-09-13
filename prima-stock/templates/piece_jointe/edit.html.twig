@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Edition Piece-Jointe</h1>
     </div>
+    <hr>
 
     {{ include('piece_jointe/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <a href="{{ path('piece_jointe_index') }}">Retour</a>
-
+    <br>
+    <a href="{{ path('piece_jointe_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
     {{ include('piece_jointe/_delete_form.html.twig') }}
 </div>
 {% endblock %}

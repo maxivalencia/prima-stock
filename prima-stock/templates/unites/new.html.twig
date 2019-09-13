@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Création Unité</h1>
     </div>
+    <hr>
 
     <br /><br />
 
     {{ include('unites/_form.html.twig') }}
-
-    <a href="{{ path('unites_index') }}">Retour</a>
+    <br>
+    <a href="{{ path('unites_index') }}" class="btn btn-primary">Retour</a>
 </div>
 {% endblock %}

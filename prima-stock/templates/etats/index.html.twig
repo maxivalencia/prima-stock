@@ -7,6 +7,7 @@
     <div class="row">
         <h1>Etats</h1>
     </div>
+    <hr>
 
     <table class="table">
         <thead>
@@ -22,8 +23,8 @@
                 <td>{{ etat.id }}</td>
                 <td>{{ etat.etat }}</td>
                 <td>
-                    <a href="{{ path('etats_show', {'id': etat.id}) }}">voir</a>
-                    <a href="{{ path('etats_edit', {'id': etat.id}) }}">edit</a>
+                    <a href="{{ path('etats_show', {'id': etat.id}) }}" class="btn btn-warning">voir</a>
+                    <a href="{{ path('etats_edit', {'id': etat.id}) }}" class="btn btn-danger">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -34,6 +35,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('etats_new') }}">Créer</a>
+    <a href="{{ path('etats_new') }}" class="btn btn-success">Créer</a>
 </div>
 {% endblock %}

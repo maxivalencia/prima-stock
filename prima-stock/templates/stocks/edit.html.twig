@@ -7,11 +7,12 @@
     <div class="row">
         <h1>Edit Stocks</h1>
     </div>
+    <hr>
 
     {{ include('stocks/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <a href="{{ path('stocks_index') }}">Retour</a>
-
+    <br>
+    <a href="{{ path('stocks_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
     {{ include('stocks/_delete_form.html.twig') }}
 <div>
 {% endblock %}
