@@ -33,6 +33,10 @@
         </tbody>
     </table>
 
+    <div class="navigation">
+        {{ knp_pagination_render(autorisations) }}
+    </div>
+
     <a href="{{ path('autorisations_new') }}" class="btn btn-success">Créer</a>
 </div>
 {% endblock %}

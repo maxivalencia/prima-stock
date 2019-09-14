@@ -39,6 +39,10 @@
         </tbody>
     </table>
 
+    <div class="navigation">
+        {{ knp_pagination_render(piece_jointes) }}
+    </div>
+
     <a href="{{ path('piece_jointe_new') }}" class="btn btn-success">Créer</a>
 </div>
 {% endblock %}

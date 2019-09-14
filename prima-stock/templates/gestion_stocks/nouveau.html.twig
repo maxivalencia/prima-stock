@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau mouvement de stock{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <h1>Nouveau saisie</h1>
+    </div>
+    <hr>
+
+    {{ form(form) }}
+
+    <a href="{{ path('nouveau') }}" class="btn btn-primary">Nouveau</a>
+
+</div>
+{% endblock %}
