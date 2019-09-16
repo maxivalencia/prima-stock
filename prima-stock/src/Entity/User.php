@@ -61,12 +61,12 @@ class User
 
     public function getNom(): ?string
     {
-        return $this->nom;
+        return strtoupper($this->nom);
     }
 
     public function setNom(string $nom): self
     {
-        $this->nom = $nom;
+        $this->nom = strtoupper($nom);
 
         return $this;
     }

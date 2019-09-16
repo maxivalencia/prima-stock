@@ -40,12 +40,12 @@ class Validations
 
     public function getValidation(): ?string
     {
-        return $this->validation;
+        return strtoupper($this->validation);
     }
 
     public function setValidation(string $validation): self
     {
-        $this->validation = $validation;
+        $this->validation = strtoupper($validation);
 
         return $this;
     }

@@ -51,12 +51,12 @@ class Produits
 
     public function getProduit(): ?string
     {
-        return $this->produit;
+        return strtoupper($this->produit);
     }
 
     public function setProduit(string $produit): self
     {
-        $this->produit = $produit;
+        $this->produit = strtoupper($produit);
 
         return $this;
     }

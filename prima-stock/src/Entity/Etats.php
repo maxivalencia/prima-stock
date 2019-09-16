@@ -40,12 +40,12 @@ class Etats
 
     public function getEtat(): ?string
     {
-        return $this->etat;
+        return strtoupper($this->etat);
     }
 
     public function setEtat(string $etat): self
     {
-        $this->etat = $etat;
+        $this->etat = strtoupper($etat);
 
         return $this;
     }

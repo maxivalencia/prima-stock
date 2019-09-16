@@ -40,12 +40,12 @@ class Access
 
     public function getAccess(): ?string
     {
-        return $this->access;
+        return strtoupper($this->access);
     }
 
     public function setAccess(string $access): self
     {
-        $this->access = $access;
+        $this->access = strtoupper($access);
 
         return $this;
     }

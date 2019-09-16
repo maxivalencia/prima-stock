@@ -40,12 +40,12 @@ class Mouvements
 
     public function getType(): ?string
     {
-        return $this->type;
+        return strtoupper($this->type);
     }
 
     public function setType(string $type): self
     {
-        $this->type = $type;
+        $this->type = strtoupper($type);
 
         return $this;
     }
