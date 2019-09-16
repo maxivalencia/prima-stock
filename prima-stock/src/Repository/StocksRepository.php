@@ -19,6 +19,70 @@ class StocksRepository extends ServiceEntityRepository
         parent::__construct($registry, Stocks::class);
     }
 
+
+    /**
+     * @return Stocks[] Returns an array of Stocks objects
+     */    
+    public function findByGroup($value)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.etat = :val')
+            ->setParameter('val', $value)
+            ->groupBy('s.referencePanier')
+            ->orderBy('s.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    /**
+     * @return Stocks[] Returns an array of Stocks objects
+     */    
+    public function findByGroupAutre($value)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.etat = :val')
+            ->setParameter('val', $value)
+            ->groupBy('s.referencePanier')
+            ->orderBy('s.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    /**
+     * @return Stocks[] Returns an array of Stocks objects
+     */    
+    public function findGroupValidation($value)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.referencePanier = :val')
+            ->setParameter('val', $value)
+            //->groupBy('s.referencePanier')
+            ->orderBy('s.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    /**
+     * @return Stocks[] Returns an array of Stocks objects
+     */    
+    public function findProduction()
+    {
+        return $this->createQueryBuilder('s')
+            //->andWhere('s.referencePanier = :val')
+            //->setParameter('val', $value)
+            ->groupBy('s.referencePanier')
+            ->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Stocks[] Returns an array of Stocks objects
     //  */

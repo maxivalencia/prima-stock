@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>Prima - {% block title %}Gestion de stock{% endblock %}</title>
         <link href="/dist/css/bootstrap.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="/css/style.css">
         {% block stylesheets %}{% endblock %}
@@ -60,14 +60,20 @@
                 </a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ path('saisies') }}">
                     <span class="menu-title">Saisie</span>
                     <i class="icon-speedometer menu-icon"></i>
                 </a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ path('validations') }}">
                     <span class="menu-title">Validation</span>
+                    <i class="icon-wrench menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('historiques') }}">
+                    <span class="menu-title">Historique</span>
                     <i class="icon-wrench menu-icon"></i>
                 </a>
                 </li>

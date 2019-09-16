@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique de mouvement{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h1>Historique de mouvement</h1>
+    </div>
+    <hr>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {# <th>Id</th> #}
+                {# <th>Quantite</th> #}
+                {# <th>CauseAnnulation</th> #}
+                <th>DateSaisie</th>
+                <th>Fournisseur</th>
+                <th>Projet</th>
+                {# <th>DateValidation</th> #}
+                <th>Reférence</th>
+                <th>Etat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr>
+                {# <td>{{ stock.id }}</td> #}
+                {# <td>{{ stock.quantite }}</td> #}
+                {# <td>{{ stock.causeAnnulation }}</td> #}
+                <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ stock.client }}</td>
+                <td>{{ stock.projet }}</td>
+                {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
+                <td>{{ stock.referencePanier }}</td>
+                <td>{{ stock.etat }}</td>
+                <td>
+                    <a href="{{ path('historiques_details', {'ref': stock.referencePanier}) }}" class="btn btn-primary">voir</a>
+                    {# <a href="{{ path('stocks_edit', {'id': stock.id}) }}" class="btn btn-danger">edit</a> #}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Aucun enregistrement trouver!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(stocks) }}
+    </div>
+
+    
+</div>
+{% endblock %}

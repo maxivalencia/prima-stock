@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}en attente de modification{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h1>Liste des produits du reférence {{ reference }}</h1>
+    </div>
+    <hr>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Désignation</th>
+                <th>Quantite</th>
+                {# <th>CauseAnnulation</th> #}
+                <th>DateSaisie</th>
+                {# <th>DateValidation</th> #}
+                <th>Reférence</th>
+                {# <th>actions</th> #}
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.produit }}</td>
+                <td>{{ stock.produit.designation }}</td>
+                <td>{{ stock.quantite }}</td>
+                {# <td>{{ stock.causeAnnulation }}</td> #}
+                <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
+                {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
+                <td>{{ stock.referencePanier }}</td>
+                <td>
+                    {# <a href="{{ path('stocks_show', {'id': stock.id}) }}" class="btn btn-primary">voir</a> #}
+                    <a href="{{ path('modif', {'id': stock.id}) }}" class="btn btn-danger">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Aucun enregistrement trouver!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(stocks) }}
+    </div>
+
+    <a href="{{ path('revalider', {'ref': reference}) }}" class="btn btn-primary">Terminer</a>
+    
+</div>
+{% endblock %}
