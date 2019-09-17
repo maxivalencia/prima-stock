@@ -11,12 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Stocks;
 use App\Entity\User;
+use App\Entity\Mouvements;
 use App\Entity\Etats;
+use App\Entity\Unites;
+use App\Entity\Conversions;
 use App\Form\NouveauType;
 use App\Form\ModifierType;
 use App\Repository\StocksRepository;
 use App\Repository\UserRepository;
+use App\Repository\MouvementsRepository;
 use App\Repository\EtatsRepository;
+use App\Repository\UnitesRepository;
+use App\Repository\ConversionsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 
 class GestionStocksController extends AbstractController
@@ -113,14 +119,20 @@ class GestionStocksController extends AbstractController
     {
         $stock = new Stocks();
         $reference = $ref;
+        //$stock_restant[] = new float();
+        // la solution pourrait-être une array collection
         $pagination = $paginator->paginate(
             $stocksRepository->findBy(["referencePanier" => $reference]), /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );
+        /* foreach($pagination as $page){
+            $stock_restant[] = reste($page->getProduit(), $page->getProjet());
+        } */
         return $this->render('gestion_stocks/validation.html.twig',[
             'stocks' => $pagination,
             'reference' => $reference,
+            //'rest' => $stock_restant,
         ]);
     }
 
@@ -140,6 +152,7 @@ class GestionStocksController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         foreach($stocksRepository->findBy(["referencePanier" => $ref]) as $sto){
             $sto->setEtat($etat2);
+            $sto->setDateValidation(new \DateTime());
             $entityManager->persist($sto);
         }
         $entityManager->flush();
@@ -303,5 +316,40 @@ class GestionStocksController extends AbstractController
             'stocks' => $pagination,
             'reference' => $reference,
         ]);
+    }
+
+    //calculateur de tolat de reste de produit
+    private function reste(Produit $prod, Projet $proj = null, MouvementsRepository $mouvementsRepository, StocksRepository $stocksRepository, UnitesRepository $unitesRepository, ConversionsRepository $conversionsRepository): float
+    {
+        $mouvement_positif = new Mouvements();
+        $mouvement_negatif = new Mouvements();
+        $unite = new Unites();
+        $mouvement_positif =$mouvementsRepository->findBy(["type" => "ENTRER"]);
+        $mouvement_negatif =$mouvementsRepository->findBy(["type" => "SORTIE"]);
+        $total = 0;
+        $valeur_unite_bas = 0;
+        $unite_bas;
+        foreach($stocksRepository->findTotal($prod, $proj) as $stock){
+            $unite = $stock->getUnite();
+            foreach($conversionsRepository->findby(["unitesource" => $unite]) as $conversion){
+                if($valeur_unite_bas < $conversion->getValeur()){
+                    $valeur_unite_bas = $conversion->getValeur();
+                }
+            }
+            
+            if($stock->getMouvement() == $mouvement_positif){
+                $total = $total + ($stock->getQuantite * $valeur_unite_bas);
+            }
+
+            
+            if($stock->getMouvement() == $mouvement_negatif){
+                $total = $total - ($stock->getQuantite * $valeur_unite_bas);
+            }
+        }
+        //findTotal()
+        //$positif = 0;
+        //$negatif = 0;
+        //$results = $positif - $negatif;
+        return $total;
     }
 }

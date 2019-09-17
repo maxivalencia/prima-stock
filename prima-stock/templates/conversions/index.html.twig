@@ -12,16 +12,20 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Valeur</th>
+                {# <th>Id</th> #}
+                <th>Unité d'origine</th>
+                <th>Valeur de conversion</th>
+                <th>Unité de conversion</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for conversion in conversions %}
             <tr>
-                <td>{{ conversion.id }}</td>
+                {# <td>{{ conversion.id }}</td> #}
+                <td>{{ conversion.unitesource }}</td>
                 <td>{{ conversion.valeur }}</td>
+                <td>{{ conversion.unitesdestinataire }}</td>
                 <td>
                     <a href="{{ path('conversions_show', {'id': conversion.id}) }}" class="btn btn-warning">voir</a>
                     <a href="{{ path('conversions_edit', {'id': conversion.id}) }}" class="btn btn-danger">edit</a>

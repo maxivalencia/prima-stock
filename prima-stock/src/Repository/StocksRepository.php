@@ -83,6 +83,27 @@ class StocksRepository extends ServiceEntityRepository
         ;
     }
 
+
+    /**
+     * @return Stocks[] Returns an array of Stocks objects
+     */    
+    public function findTotal($value1, $value2 = null)
+    {
+        //à trouver le total des produits
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.produit = :val1')
+            ->andWhere('s.projet = :val2')
+            ->andWhere('s.etat <> val3')
+            ->setParameter('val1', $value1)
+            ->setParameter('val2', $value2)
+            ->setParameter('val3', 'ANNULER')
+            //->groupBy('s.referencePanier')
+            //->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Stocks[] Returns an array of Stocks objects
     //  */
