@@ -15,14 +15,20 @@ use App\Entity\Mouvements;
 use App\Entity\Etats;
 use App\Entity\Unites;
 use App\Entity\Conversions;
+use App\Entity\Produits;
+use App\Entity\Projet;
 use App\Form\NouveauType;
 use App\Form\ModifierType;
+use App\Form\ProduitsType;
+use App\Form\ProjetType;
 use App\Repository\StocksRepository;
 use App\Repository\UserRepository;
 use App\Repository\MouvementsRepository;
 use App\Repository\EtatsRepository;
 use App\Repository\UnitesRepository;
 use App\Repository\ConversionsRepository;
+use App\Repository\ProduitsRepository;
+use App\Repository\ProjetRepository;
 use Knp\Component\Pager\PaginatorInterface;
 
 class GestionStocksController extends AbstractController
@@ -115,24 +121,28 @@ class GestionStocksController extends AbstractController
     /**
      * @Route("/gestion/validation/{ref}", name="validation", methods={"GET","POST"})
      */
-    public function validation(int $ref, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function validation(int $ref, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request, ProduitsRepository $produitsRepository, ProjetRepository $projetRepository): Response
     {
         $stock = new Stocks();
         $reference = $ref;
-        //$stock_restant[] = new float();
+        //$stock_restant= array();
+        $i = 0;
+        $report = "";
         // la solution pourrait-être une array collection
         $pagination = $paginator->paginate(
             $stocksRepository->findBy(["referencePanier" => $reference]), /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );
-        /* foreach($pagination as $page){
-            $stock_restant[] = reste($page->getProduit(), $page->getProjet());
-        } */
+        foreach($pagination as $page){
+            //$stock_restant[$i] = $this->reste($produitsRepository->findOneBy(["id" => $page->getProduit()]), $projetRepository->findOneBy(["id" => $page->getProjet()]));
+            $report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
+            $i++;
+        }
         return $this->render('gestion_stocks/validation.html.twig',[
             'stocks' => $pagination,
             'reference' => $reference,
-            //'rest' => $stock_restant,
+            'rests' => $report,
         ]);
     }
 
@@ -318,38 +328,44 @@ class GestionStocksController extends AbstractController
         ]);
     }
 
-    //calculateur de tolat de reste de produit
-    private function reste(Produit $prod, Projet $proj = null, MouvementsRepository $mouvementsRepository, StocksRepository $stocksRepository, UnitesRepository $unitesRepository, ConversionsRepository $conversionsRepository): float
+    //calculateur de total de reste de produit
+    //private function reste(Produits $prod, Projet $proj)
+    private function reste($stock)
     {
+        $entityManager = $this->getDoctrine()->getManager();;
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $produitsRepository = $entityManager->getRepository(Produits::class);
+        $projetRepository = $entityManager->getRepository(Projet::class);
+        $stocksRepository = $entityManager->getRepository(Stocks::class);
         $mouvement_positif = new Mouvements();
         $mouvement_negatif = new Mouvements();
         $unite = new Unites();
-        $mouvement_positif =$mouvementsRepository->findBy(["type" => "ENTRER"]);
-        $mouvement_negatif =$mouvementsRepository->findBy(["type" => "SORTIE"]);
+        $mouvement_positif = $mouvementsRepository->findBy(["type" => "ENTRER"]);
+        $mouvement_negatif = $mouvementsRepository->findBy(["type" => "SORTIE"]);
         $total = 0;
         $valeur_unite_bas = 0;
-        $unite_bas;
+        $unite_bas = '';
+        $prod = $produitsRepository->findOneBy(["id" => $stock->getProduit()]);
+        $proj = $projetRepository->findOneBy(["id" => $stock->getProjet()]);
         foreach($stocksRepository->findTotal($prod, $proj) as $stock){
             $unite = $stock->getUnite();
-            foreach($conversionsRepository->findby(["unitesource" => $unite]) as $conversion){
+            foreach($conversionsRepository->findby(["unitesource" => $stock->getUnite()]) as $conversion){
                 if($valeur_unite_bas < $conversion->getValeur()){
                     $valeur_unite_bas = $conversion->getValeur();
+                    $unite_bas = $conversion->getUnitesdestinataire()->getUnite()->getSigle();
                 }
             }
             
-            if($stock->getMouvement() == $mouvement_positif){
-                $total = $total + ($stock->getQuantite * $valeur_unite_bas);
+            if($stock->getMouvement() == $mouvement_positif->getMouvement()){
+                $total = $total + ($stock->getQuantite() * $valeur_unite_bas);
             }
 
             
-            if($stock->getMouvement() == $mouvement_negatif){
-                $total = $total - ($stock->getQuantite * $valeur_unite_bas);
+            if($stock->getMouvement() == $mouvement_negatif->getMouvement()){
+                $total = $total - ($stock->getQuantite() * $valeur_unite_bas);
             }
         }
-        //findTotal()
-        //$positif = 0;
-        //$negatif = 0;
-        //$results = $positif - $negatif;
-        return $total;
+        return $total.' '.$unite_bas;
+        
     }
 }

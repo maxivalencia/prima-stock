@@ -8,7 +8,7 @@
         <h1>Liste des produits du reférence {{ reference }}</h1>
     </div>
     <hr>
-
+    <p>{{ rests }}</p>
     <table class="table">
         <thead>
             <tr>
@@ -16,7 +16,7 @@
                 <th>Désignation</th>
                 <th>Quantite</th>
                 {# <th>CauseAnnulation</th> #}
-                <th>DateSaisie</th>
+                <th>Date Saisie</th>
                 {# <th>DateValidation</th> #}
                 <th>Reférence</th>
                 {# <th>actions</th> #}
@@ -44,7 +44,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    
     <div class="navigation">
         {{ knp_pagination_render(stocks) }}
     </div>
