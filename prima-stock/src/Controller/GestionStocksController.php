@@ -350,7 +350,7 @@ class GestionStocksController extends AbstractController
         $conversionsRepository = $entityManager->getRepository(Conversions::class);
         $total = array();
         $valeur_unite_bas = 0;
-        foreach($produitsRepository->findAll() as $prod){
+        /* foreach($produitsRepository->findAll() as $prod){
             $stock = new Stocks();
             $unite = new Unites();
             $unite_bas = '';
@@ -393,21 +393,33 @@ class GestionStocksController extends AbstractController
                     }
                 }
             }
-            //$total[$i] = $stock;
-            $stock_restant[$i] = new Stocks();
-            $stock_restant[$i] = $stock;
+            $total[$i] = new Stocks();
+            $total[$i] = $stock;
+            //$stock_restant[$i] = new Stocks();
+            //$stock_restant[$i] = $stock;
             $i++;
 
         }
         $pagination = $paginator->paginate(
-            $stock_restant, /* query NOT result */
+            $total,
+            $request->query->getInt('page', 1),
+            10
+        ); */
+
+        $pagination = $paginator->paginate(
+            $stocksRepository->findEtat(), /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );
+        foreach($pagination as $page){
+            $stock_restant[$i] = $this->reste($page);
+            //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
+            $i++;
+        }
         
         return $this->render('gestion_stocks/etat.html.twig',[
             'stocks' => $pagination,
-            //'rests' => $stock_restant,
+            'rests' => $stock_restant,
         ]);
     }
 

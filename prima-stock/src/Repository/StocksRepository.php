@@ -108,12 +108,12 @@ class StocksRepository extends ServiceEntityRepository
     /**
      * @return Stocks[] Returns an array of Stocks objects
      */    
-    public function findEtat($value1 = null)
+    public function findEtat()
     {
         //à trouver le total des produits
         return $this->createQueryBuilder('s')
-            ->andWhere('s.etat = :val1')
-            ->setParameter('val1', $value1)
+            //->andWhere('s.etat = :val1')
+            //->setParameter('val1', $value1)
             ->groupBy('s.produit')
             //->groupBy('s.mouvement')
             //->orderBy('s.id', 'DESC')
