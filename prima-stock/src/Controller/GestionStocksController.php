@@ -31,6 +31,8 @@ use App\Repository\ProduitsRepository;
 use App\Repository\ProjetRepository;
 use Knp\Component\Pager\PaginatorInterface;
 
+//use Doctrine\Common\Collections\Collection;
+
 class GestionStocksController extends AbstractController
 {
     /**
@@ -125,9 +127,9 @@ class GestionStocksController extends AbstractController
     {
         $stock = new Stocks();
         $reference = $ref;
-        //$stock_restant= array();
+        $stock_restant= array();
         $i = 0;
-        $report = "";
+        //$report = "";
         // la solution pourrait-être une array collection
         $pagination = $paginator->paginate(
             $stocksRepository->findBy(["referencePanier" => $reference]), /* query NOT result */
@@ -135,14 +137,14 @@ class GestionStocksController extends AbstractController
             10/*limit per page*/
         );
         foreach($pagination as $page){
-            //$stock_restant[$i] = $this->reste($produitsRepository->findOneBy(["id" => $page->getProduit()]), $projetRepository->findOneBy(["id" => $page->getProjet()]));
-            $report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
+            $stock_restant[$i] = $this->reste($page);
+            //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
             $i++;
         }
         return $this->render('gestion_stocks/validation.html.twig',[
             'stocks' => $pagination,
             'reference' => $reference,
-            'rests' => $report,
+            'rests' => $stock_restant,
         ]);
     }
 
@@ -328,44 +330,143 @@ class GestionStocksController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/gestion/etat", name="etat", methods={"GET","POST"})
+     */
+    public function etat(StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request, ProduitsRepository $produitsRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $stock_restant[] = new Stocks();
+        $etatsRepository = $entityManager->getRepository(Etats::class);
+        $etat = new Etats();
+        $etat = $etatsRepository->findOneBy(["id" => 4]);
+        $i = 0;
+        $mouvement_positif = new Mouvements();
+        $mouvement_negatif = new Mouvements();
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $mouvement_positif = $mouvementsRepository->findOneBy(["id" => 1]);
+        $mouvement_negatif = $mouvementsRepository->findOneBy(["id" => 2]);
+        $conversionsRepository = $entityManager->getRepository(Conversions::class);
+        $total = array();
+        $valeur_unite_bas = 0;
+        foreach($produitsRepository->findAll() as $prod){
+            $stock = new Stocks();
+            $unite = new Unites();
+            $unite_bas = '';
+            foreach($stocksRepository->findBy(["produit" => $prod]) as $sto){  
+                $unite = $sto->getUnite();
+                if($unite_bas == ''){
+                    $unite_bas = $unite->getSigle();
+                }           
+                if($stock == null){
+                    $stock = $sto; 
+                    foreach($conversionsRepository->findby(["unitesource" => $unite]) as $conversion){
+                        if($valeur_unite_bas < $conversion->getValeur()){
+                            $valeur_unite_bas = $conversion->getValeur();
+                            $unite_bas = $conversion->getUnitesdestinataire();
+                        }
+                    }
+                    if($valeur_unite_bas == 0){
+                        $stock->setQuatite($stock->getQuantite() * $valeur_unite_bas);
+                    }
+                }else{ 
+                    foreach($conversionsRepository->findby(["unitesource" => $unite]) as $conversion){
+                        if($valeur_unite_bas < $conversion->getValeur()){
+                            $valeur_unite_bas = $conversion->getValeur();
+                            $unite_bas = $conversion->getUnitesdestinataire();
+                        }
+                    }
+                    if($sto->getMouvement() == $mouvement_positif && $sto->getEtat() == $etat){
+                        if($sto->getUnite() == $unite_bas){
+                            $stock->setQuantite($stock->getQuantite() + $sto->getQuantite());
+                        }else{
+                            $stock->setQuantite($stock->getQuantite() + ($sto->getQuantite() * $valeur_unite_bas));
+                        }
+                    }                   
+                    if($sto->getMouvement() == $mouvement_negatif && $sto->getEtat() == $etat){
+                        if($stock->getUnite() == $unite_bas){
+                            $stock->setQuantite($stock->getQuantite() - $sto->getQuantite());
+                        }else{
+                            $stock->setQuantite($stock->getQuantite() - ($sto->getQuantite() * $valeur_unite_bas));
+                        }
+                    }
+                }
+            }
+            //$total[$i] = $stock;
+            $stock_restant[$i] = new Stocks();
+            $stock_restant[$i] = $stock;
+            $i++;
+
+        }
+        $pagination = $paginator->paginate(
+            $stock_restant, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
+        
+        return $this->render('gestion_stocks/etat.html.twig',[
+            'stocks' => $pagination,
+            //'rests' => $stock_restant,
+        ]);
+    }
+
     //calculateur de total de reste de produit
     //private function reste(Produits $prod, Projet $proj)
     private function reste($stock)
     {
-        $entityManager = $this->getDoctrine()->getManager();;
+        $entityManager = $this->getDoctrine()->getManager();
         $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
         $produitsRepository = $entityManager->getRepository(Produits::class);
         $projetRepository = $entityManager->getRepository(Projet::class);
         $stocksRepository = $entityManager->getRepository(Stocks::class);
+        $conversionsRepository = $entityManager->getRepository(Conversions::class);
+        $etatsRepository = $entityManager->getRepository(Etats::class);
         $mouvement_positif = new Mouvements();
         $mouvement_negatif = new Mouvements();
         $unite = new Unites();
-        $mouvement_positif = $mouvementsRepository->findBy(["type" => "ENTRER"]);
-        $mouvement_negatif = $mouvementsRepository->findBy(["type" => "SORTIE"]);
+        $etat = new Etats();
+        $mouvement_positif = $mouvementsRepository->findOneBy(["id" => 1]);
+        $mouvement_negatif = $mouvementsRepository->findOneBy(["id" => 2]);
+        $etat = $etatsRepository->findOneBy(["id" => 4]);
         $total = 0;
         $valeur_unite_bas = 0;
         $unite_bas = '';
         $prod = $produitsRepository->findOneBy(["id" => $stock->getProduit()]);
         $proj = $projetRepository->findOneBy(["id" => $stock->getProjet()]);
-        foreach($stocksRepository->findTotal($prod, $proj) as $stock){
-            $unite = $stock->getUnite();
-            foreach($conversionsRepository->findby(["unitesource" => $stock->getUnite()]) as $conversion){
-                if($valeur_unite_bas < $conversion->getValeur()){
-                    $valeur_unite_bas = $conversion->getValeur();
-                    $unite_bas = $conversion->getUnitesdestinataire()->getUnite()->getSigle();
+        /* if ($proj != null){
+            $unite_bas = $proj->getNom();
+        } */
+        foreach($stocksRepository->findBy(["produit" => $prod]) as $stock){
+            if($stock->getProjet() == $proj){ 
+                $unite = $stock->getUnite();
+                if($unite_bas == ''){
+                    $unite_bas = $unite->getSigle();
+                }
+                foreach($conversionsRepository->findby(["unitesource" => $unite]) as $conversion){
+                    if($valeur_unite_bas < $conversion->getValeur()){
+                        $valeur_unite_bas = $conversion->getValeur();
+                        $unite_bas = $conversion->getUnitesdestinataire();
+                    }
+                }
+            
+                if($stock->getMouvement() == $mouvement_positif && $stock->getEtat() == $etat){
+                    if($stock->getUnite() == $unite_bas){
+                        $total = $total + $stock->getQuantite();
+                    }else{
+                        $total = $total + ($stock->getQuantite() * $valeur_unite_bas);
+                    }
+                }    
+                
+                if($stock->getMouvement() == $mouvement_negatif && $stock->getEtat() == $etat){
+                    if($stock->getUnite() == $unite_bas){
+                        $total = $total - $stock->getQuantite();
+                    }else{
+                        $total = $total - ($stock->getQuantite() * $valeur_unite_bas);
+                    }
                 }
             }
-            
-            if($stock->getMouvement() == $mouvement_positif->getMouvement()){
-                $total = $total + ($stock->getQuantite() * $valeur_unite_bas);
-            }
-
-            
-            if($stock->getMouvement() == $mouvement_negatif->getMouvement()){
-                $total = $total - ($stock->getQuantite() * $valeur_unite_bas);
-            }
         }
-        return $total.' '.$unite_bas;
-        
+        return $total.' '.$unite_bas;        
     }
 }

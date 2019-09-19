@@ -15,10 +15,10 @@
                 {# <th>Id</th> #}
                 {# <th>Quantite</th> #}
                 {# <th>CauseAnnulation</th> #}
-                <th>DateSaisie</th>
+                <th>Date Saisie</th>
                 <th>Date Fournisseur</th>
-                <th>Date Projet</th>
-                {# <th>DateValidation</th> #}
+                <th>Projet</th>
+                <th>Mouvement</th>
                 <th>Reférence</th>
                 <th>actions</th>
             </tr>
@@ -32,7 +32,7 @@
                 <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ stock.client }}</td>
                 <td>{{ stock.projet }}</td>
-                {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
+                <td>{{ stock.mouvement }}</td>
                 <td>{{ stock.referencePanier }}</td>
                 <td>
                     <a href="{{ path('validation', {'ref': stock.referencePanier}) }}" class="btn btn-primary">voir</a>
