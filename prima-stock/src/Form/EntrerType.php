@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class NouveauType extends AbstractType
+class EntrerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -26,10 +26,10 @@ class NouveauType extends AbstractType
             ->add('quantite', TextType::class)
             ->add('unite')
             ->add('projet')
-            ->add('mouvement')
+            //->add('mouvement')
             ->add('client')
             ->add('Ajouter', SubmitType::class)
-        ;
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

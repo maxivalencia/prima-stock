@@ -18,6 +18,8 @@ use App\Entity\Conversions;
 use App\Entity\Produits;
 use App\Entity\Projet;
 use App\Form\NouveauType;
+use App\Form\EntrerType;
+use App\Form\SortieType;
 use App\Form\ModifierType;
 use App\Form\ProduitsType;
 use App\Form\ProjetType;
@@ -480,5 +482,87 @@ class GestionStocksController extends AbstractController
             }
         }
         return $total.' '.$unite_bas;        
+    }
+
+
+    // modificaiton après présentation de l'ébauche
+    // pour l'entrer des produits
+
+
+    /**
+     * @Route("/gestion/entrer", name="entrer", methods={"GET","POST"})
+     */
+    public function entrer(Request $request, UserRepository $userRepository, EtatsRepository $etatsrepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $stock = new Stocks;
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $mouvement = $mouvementsRepository->findOneBy(["id" => 1]);
+        $form = $this->createForm(EntrerType::class, $stock);
+        $form->handleRequest($request);
+        $reference = $form->get('referencePanier')->getData();
+        if($reference == ''){
+            $daty   = new \DateTime(); //this returns the current date time
+            $results = $daty->format('Y-m-d-H-i-s');
+            $krr    = explode('-', $results);
+            $results = implode("", $krr);
+            $stock->setReferencePanier($results);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $stock->setDateSaisie(new \DateTime());
+            $stock->setOperateur($userRepository->findOneBy(["id" => 1]));
+            $stock->setEtat($etatsrepository->findOneBy(["id" => 1]));
+            $stock->setMouvement($mouvement);
+            $entityManager->persist($stock);
+            $entityManager->flush();
+
+            //return $this->redirectToRoute('nouveau');
+        }
+        return $this->render('gestion_stocks/entrer.html.twig',[
+            'stock' => $stock,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // pour la sortie des produits
+
+
+    /**
+     * @Route("/gestion/sortie", name="sortie", methods={"GET","POST"})
+     */
+    public function sortie(Request $request, UserRepository $userRepository, EtatsRepository $etatsrepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $stock = new Stocks;
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $mouvement = $mouvementsRepository->findOneBy(["id" => 2]);
+        $form = $this->createForm(SortieType::class, $stock);
+        $form->handleRequest($request);
+        $reference = $form->get('referencePanier')->getData();
+        if($reference == ''){
+            $daty   = new \DateTime(); //this returns the current date time
+            $results = $daty->format('Y-m-d-H-i-s');
+            $krr    = explode('-', $results);
+            $results = implode("", $krr);
+            $stock->setReferencePanier($results);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $stock->setDateSaisie(new \DateTime());
+            $stock->setOperateur($userRepository->findOneBy(["id" => 1]));
+            $stock->setEtat($etatsrepository->findOneBy(["id" => 1]));
+            $stock->setMouvement($mouvement);
+            $entityManager->persist($stock);
+            $entityManager->flush();
+
+            //return $this->redirectToRoute('nouveau');
+        }
+        return $this->render('gestion_stocks/sortie.html.twig',[
+            'stock' => $stock,
+            'form' => $form->createView(),
+        ]);
     }
 }
