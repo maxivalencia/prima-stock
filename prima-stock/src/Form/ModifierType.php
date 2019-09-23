@@ -23,7 +23,7 @@ class ModifierType extends AbstractType
             ->add('quantite')
             ->add('unite')
             ->add('projet')
-            ->add('mouvement', HiddenType::class)
+            //->add('mouvement', HiddenType::class)
             ->add('client')
             #->add('operateur')
             #->add('piece')

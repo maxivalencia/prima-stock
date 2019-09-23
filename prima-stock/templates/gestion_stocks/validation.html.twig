@@ -8,6 +8,8 @@
         <h1>Liste des produits du reférence {{ reference }}</h1>
     </div>
     <hr>
+    <h2><strong> - Projet : </strong>{{ projet }}</h2>
+    <h2><strong> - Client : </strong>{{ client }}</h2>
     <table class="table">
         <thead>
             <tr>
@@ -53,6 +55,7 @@
     </div>
     <br><br>
     <a href="{{ path('valider', {'ref': reference}) }}" class="btn btn-primary">Valider</a>
+    {# <a href="{{ path('modifier', {'ref': reference}) }}" class="btn btn-success">Modifier</a> #}
     <a href="{{ path('modifier', {'ref': reference}) }}" class="btn btn-success">Modifier</a>
     <a href="{{ path('annuler', {'ref': reference}) }}" class="btn btn-danger">Annuler</a>
 </div>

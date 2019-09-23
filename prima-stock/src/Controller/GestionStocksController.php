@@ -131,6 +131,8 @@ class GestionStocksController extends AbstractController
         $reference = $ref;
         $stock_restant= array();
         $i = 0;
+        $client = "";
+        $projet = "";
         //$report = "";
         // la solution pourrait-être une array collection
         $pagination = $paginator->paginate(
@@ -141,12 +143,16 @@ class GestionStocksController extends AbstractController
         foreach($pagination as $page){
             $stock_restant[$i] = $this->reste($page);
             //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
+            $client = $page->getClient();
+            $projet = $page->getProjet();
             $i++;
         }
         return $this->render('gestion_stocks/validation.html.twig',[
             'stocks' => $pagination,
             'reference' => $reference,
             'rests' => $stock_restant,
+            'client' => $client,
+            'projet' => $projet,
         ]);
     }
 
@@ -223,16 +229,18 @@ class GestionStocksController extends AbstractController
         $etat2 = new Etats();
         $stock = new Stocks();
         $stock2 [] = new Stocks();
+        $reference = '';
         $etat = $etatsRepository->findOneBy(["etat" => "en attente de validation"]);
         $etat2 = $etatsRepository->findOneBy(["etat" => "en attente de modification"]);
         $stock2[] = $stocksRepository->findBy(["referencePanier" => $ref]);
         $entityManager = $this->getDoctrine()->getManager();
+        $reference = $ref;
         foreach($stocksRepository->findBy(["referencePanier" => $ref]) as $sto){
             $sto->setEtat($etat2);
             $entityManager->persist($sto);
         }
         $entityManager->flush();
-        return $this->redirectToRoute('validations');
+        return $this->redirectToRoute('saisie', ['ref' => $reference]);
     }
 
 
@@ -242,15 +250,29 @@ class GestionStocksController extends AbstractController
     public function saisie(int $ref, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $stock = new Stocks();
+        $stock_restant= array();
         $reference = $ref;
+        $client = '';
+        $projet = '';
+        $i = 0;
         $pagination = $paginator->paginate(
             $stocksRepository->findBy(["referencePanier" => $reference]), /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );
+        foreach($pagination as $page){
+            $stock_restant[$i] = $this->reste($page);
+            //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
+            $client = $page->getClient();
+            $projet = $page->getProjet();
+            $i++;
+        }
         return $this->render('gestion_stocks/saisie.html.twig',[
             'stocks' => $pagination,
             'reference' => $reference,
+            'client' => $client,
+            'projet' => $projet,
+            'rests' => $stock_restant,
         ]);
     }
 
@@ -284,7 +306,7 @@ class GestionStocksController extends AbstractController
         $etat2 = new Etats();
         $stock = new Stocks();
         $stock2 [] = new Stocks();
-        $etat = $etatsRepository->findOneBy(["etat" => "en attente de validation"]);
+        $etat = $etatsRepository->findOneBy(["etat" => "valider"]);
         $etat2 = $etatsRepository->findOneBy(["etat" => "en attente de modification"]);
         $stock2[] = $stocksRepository->findBy(["referencePanier" => $ref]);
         $entityManager = $this->getDoctrine()->getManager();
@@ -321,14 +343,25 @@ class GestionStocksController extends AbstractController
     {
         $stock = new Stocks();
         $reference = $ref;
+        $client = "";
+        $projet = "";
         $pagination = $paginator->paginate(
             $stocksRepository->findGroupValidation($reference ), /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );
+        foreach($pagination as $page){
+            //$stock_restant[$i] = $this->reste($page);
+            //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
+            $client = $page->getClient();
+            $projet = $page->getProjet();
+            //$i++;
+        }
         return $this->render('gestion_stocks/historiques_details.html.twig',[
             'stocks' => $pagination,
             'reference' => $reference,
+            'client' => $client,
+            'projet' => $projet,
         ]);
     }
 
@@ -446,6 +479,12 @@ class GestionStocksController extends AbstractController
         $total = 0;
         $valeur_unite_bas = 0;
         $unite_bas = '';
+        $autre_unite_sup = array();
+        $autre_valeur_sup = array();
+        $autre_unite_inf = array();
+        $autre_valeur_inf = array();
+        $i = 0;
+        $j = 0;
         $prod = $produitsRepository->findOneBy(["id" => $stock->getProduit()]);
         $proj = $projetRepository->findOneBy(["id" => $stock->getProjet()]);
         /* if ($proj != null){
@@ -462,6 +501,22 @@ class GestionStocksController extends AbstractController
                         $valeur_unite_bas = $conversion->getValeur();
                         $unite_bas = $conversion->getUnitesdestinataire();
                     }
+                    // préparation du calcul des autres unité
+                    foreach($autre_unite_sup as $autre){
+                        if($autre != $conversion->getUnitesdestinataire()){
+                            $autre_unite_sup [$i] = $conversion->getUnitesdestinataire();
+                            $autre_valeur_sup [$i] = $conversion->getValeur();
+                            $i++;
+                        }
+                    }
+                    /* foreach($autre_unite_inf as $autre){
+                        if($autre != $conversion->getUnitesource()){
+                            $autre_unite_inf[$i] = $conversion->getUnitesource();
+                            $autre_valeur_inf[$i] = $conversion->getValeur();
+                            $j++;
+                        }
+                    } */
+                    // fin de la préparation du calcul des autres unité
                 }
             
                 if($stock->getMouvement() == $mouvement_positif && $stock->getEtat() == $etat){
@@ -481,7 +536,14 @@ class GestionStocksController extends AbstractController
                 }
             }
         }
-        return $total.' '.$unite_bas;        
+        $k = 0;
+        $convers = " | ";
+        foreach($autre_unite_sup as $autresup){
+            $res = $autre_valeur_sup[$k] * $total;
+            $convers = $convers.' | '.$res.' '.$autre_unite_sup;
+            $k++;
+        }
+        return $total.' '.$unite_bas.' '.$convers;        
     }
 
 

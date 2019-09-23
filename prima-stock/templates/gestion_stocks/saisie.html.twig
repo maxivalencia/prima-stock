@@ -8,6 +8,8 @@
         <h1>Liste des produits du reférence {{ reference }}</h1>
     </div>
     <hr>
+    <h2><strong> - Projet : </strong>{{ projet }}</h2>
+    <h2><strong> - Client : </strong>{{ client }}</h2>
 
     <table class="table">
         <thead>
@@ -19,10 +21,12 @@
                 <th>Date Saisie</th>
                 {# <th>DateValidation</th> #}
                 <th>Reférence</th>
-                {# <th>actions</th> #}
+                <th>Disponible</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
+        {% set myVal = 0 %}
         {% for stock in stocks %}
             <tr>
                 <td>{{ stock.produit }}</td>
@@ -32,11 +36,13 @@
                 <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
                 {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
                 <td>{{ stock.referencePanier }}</td>
+                <td>{{  rests[myVal] }}</td>
                 <td>
                     {# <a href="{{ path('stocks_show', {'id': stock.id}) }}" class="btn btn-primary">voir</a> #}
                     <a href="{{ path('modif', {'id': stock.id}) }}" class="btn btn-danger">Modifier</a>
                 </td>
             </tr>
+            {% set myVal = myVal + 1 %}
         {% else %}
             <tr>
                 <td colspan="7">Aucun enregistrement trouver!</td>
