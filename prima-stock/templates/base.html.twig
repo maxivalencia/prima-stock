@@ -31,7 +31,7 @@
                     </form>
                 </li>
                 <li class="nav-item lang-dropdown d-none d-sm-block" class="btn btn-light">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ path('app_logout') }}">
                     <p class="mb-0">Déconnexion <i class="flag-icon flag-icon-gb"></i></p>
                     </a>
                 </li>
@@ -75,6 +75,24 @@
                     <i class="icon-speedometer menu-icon"></i>
                 </a>
                 </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('retour') }}">
+                    <span class="menu-title">Retour</span>
+                    <i class="icon-speedometer menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('remplacement') }}">
+                    <span class="menu-title">Remplacement</span>
+                    <i class="icon-speedometer menu-icon"></i>
+                </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{{ path('avarie') }}">
+                    <span class="menu-title">Avarié</span>
+                    <i class="icon-speedometer menu-icon"></i>
+                </a>
+                </li>
                 {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('saisies') }}">
                     <span class="menu-title">Modification</span>
@@ -113,13 +131,18 @@
                     <span class="menu-title">Utilisateurs</span>
                     <i class="icon-grid menu-icon"></i>
                 </a>
-                </li>
-                <li class="nav-item">
+                {# <li class="nav-item">
+                <a class="nav-link" href="{{ path('username_index') }}">
+                    <span class="menu-title">Compte acces</span>
+                    <i class="icon-grid menu-icon"></i>
+                </a>
+                </li> #}
+                {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('access_index') }}">
                     <span class="menu-title">Accès</span>
                     <i class="icon-grid menu-icon"></i>
                 </a>
-                </li>
+                </li> #}
                 <li class="nav-item">
                 <a class="nav-link" href="{{ path('clients_index') }}">
                     <span class="menu-title">Clients</span>
@@ -144,12 +167,12 @@
                     <i class="icon-grid menu-icon"></i>
                 </a>
                 </li>
-                <li class="nav-item">
+                {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('autorisations_index') }}">
                     <span class="menu-title">Autorisation</span>
                     <i class="icon-grid menu-icon"></i>
                 </a>
-                </li>
+                </li> #}
                 <li class="nav-item">
                 <a class="nav-link" href="{{ path('produits_index') }}">
                     <span class="menu-title">Produit</span>

@@ -28,9 +28,21 @@ class Access
      */
     private $autorisations;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Username", mappedBy="Access")
+     */
+    private $usernames;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="access")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->autorisations = new ArrayCollection();
+        $this->usernames = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,6 +100,68 @@ class Access
     public function __toString()
     {
         return $this->getAccess();
+    }
+
+    /**
+     * @return Collection|Username[]
+     */
+    public function getUsernames(): Collection
+    {
+        return $this->usernames;
+    }
+
+    public function addUsername(Username $username): self
+    {
+        if (!$this->usernames->contains($username)) {
+            $this->usernames[] = $username;
+            $username->setAccess($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsername(Username $username): self
+    {
+        if ($this->usernames->contains($username)) {
+            $this->usernames->removeElement($username);
+            // set the owning side to null (unless already changed)
+            if ($username->getAccess() === $this) {
+                $username->setAccess(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setAccess($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getAccess() === $this) {
+                $user->setAccess(null);
+            }
+        }
+
+        return $this;
     }
 
 }

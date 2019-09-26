@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Username{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h1>Edition Username</h1>
+    </div>
+    <hr>
+
+    {{ include('username/_form.html.twig', {'button_label': 'Modifier'}) }}
+    <br>
+    <a href="{{ path('username_index') }}" class="btn btn-primary">Retour</a>
+    <br><br>
+    {{ include('username/_delete_form.html.twig') }}
+</div>
+{% endblock %}

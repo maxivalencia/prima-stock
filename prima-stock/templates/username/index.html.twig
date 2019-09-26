@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Username index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h1>Username Liste</h1>
+    </div>
+    <hr>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Roles</th>
+                {# <th>Password</th> #}
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for username in usernames %}
+            <tr>
+                <td>{{ username.id }}</td>
+                <td>{{ username.username }}</td>
+                {# <td>{{ username.roles ? username.roles|json_encode : '' }}</td> #}
+                <td>{{ username.password }}</td>
+                <td>
+                    <a href="{{ path('username_show', {'id': username.id}) }}" class="btn btn-warning">voir</a>
+                    <a href="{{ path('username_edit', {'id': username.id}) }}" class="btn btn-danger">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun Enregistrement trouver!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(usernames) }}
+    </div>
+
+    <a href="{{ path('username_new') }}" class="btn btn-success">Créer</a>
+</div>
+{% endblock %}

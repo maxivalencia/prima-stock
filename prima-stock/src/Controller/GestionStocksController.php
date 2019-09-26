@@ -160,7 +160,7 @@ class GestionStocksController extends AbstractController
     /**
      * @Route("/gestion/valider/{ref}", name="valider", methods={"GET","POST"})
      */
-    public function valider(int $ref, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function valider(int $ref, UserRepository $userRepository, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $etat = new Etats();
         $etat2 = new Etats();
@@ -173,6 +173,9 @@ class GestionStocksController extends AbstractController
         foreach($stocksRepository->findBy(["referencePanier" => $ref]) as $sto){
             $sto->setEtat($etat2);
             $sto->setDateValidation(new \DateTime());
+            $username = $this->getUser();
+            $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
+            $sto->setValidateur($user);
             $entityManager->persist($sto);
         }
         $entityManager->flush();
@@ -574,9 +577,13 @@ class GestionStocksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $stock->setDateSaisie(new \DateTime());
-            $stock->setOperateur($userRepository->findOneBy(["id" => 1]));
+            //$stock->setOperateur($userRepository->findOneBy(["id" => 1]));
             $stock->setEtat($etatsrepository->findOneBy(["id" => 1]));
             $stock->setMouvement($mouvement);
+            $username = $this->getUser();
+            $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
+            $stock->setOperateur($user);
+            $stock->setCauseAnnulation("Entrer standard");
             $entityManager->persist($stock);
             $entityManager->flush();
 
@@ -614,15 +621,145 @@ class GestionStocksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $stock->setDateSaisie(new \DateTime());
-            $stock->setOperateur($userRepository->findOneBy(["id" => 1]));
+            //$stock->setOperateur($userRepository->findOneBy(["id" => 1]));
             $stock->setEtat($etatsrepository->findOneBy(["id" => 1]));
             $stock->setMouvement($mouvement);
+            $username = $this->getUser();
+            $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
+            $stock->setOperateur($user);
+            $stock->setCauseAnnulation("Sortie standard");
             $entityManager->persist($stock);
             $entityManager->flush();
 
             //return $this->redirectToRoute('nouveau');
         }
         return $this->render('gestion_stocks/sortie.html.twig',[
+            'stock' => $stock,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/gestion/retour", name="retour", methods={"GET","POST"})
+     */
+    public function retour(Request $request, UserRepository $userRepository, EtatsRepository $etatsrepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $stock = new Stocks;
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $mouvement = $mouvementsRepository->findOneBy(["id" => 1]);
+        $form = $this->createForm(SortieType::class, $stock);
+        $form->handleRequest($request);
+        $reference = $form->get('referencePanier')->getData();
+        if($reference == ''){
+            $daty   = new \DateTime(); //this returns the current date time
+            $results = $daty->format('Y-m-d-H-i-s');
+            $krr    = explode('-', $results);
+            $results = implode("", $krr);
+            $stock->setReferencePanier($results);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $stock->setDateSaisie(new \DateTime());
+            //$stock->setOperateur($userRepository->findOneBy(["id" => 1]));
+            $stock->setEtat($etatsrepository->findOneBy(["id" => 1]));
+            $stock->setMouvement($mouvement);
+            $username = $this->getUser();
+            $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
+            $stock->setOperateur($user);
+            $stock->setCauseAnnulation("Retour de produit non consommer");
+            $entityManager->persist($stock);
+            $entityManager->flush();
+
+            //return $this->redirectToRoute('nouveau');
+        }
+        return $this->render('gestion_stocks/retour.html.twig',[
+            'stock' => $stock,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/gestion/remplacement", name="remplacement", methods={"GET","POST"})
+     */
+    public function remplacement(Request $request, UserRepository $userRepository, EtatsRepository $etatsrepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $stock = new Stocks;
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $mouvement = $mouvementsRepository->findOneBy(["id" => 1]);
+        $form = $this->createForm(SortieType::class, $stock);
+        $form->handleRequest($request);
+        $reference = $form->get('referencePanier')->getData();
+        if($reference == ''){
+            $daty   = new \DateTime(); //this returns the current date time
+            $results = $daty->format('Y-m-d-H-i-s');
+            $krr    = explode('-', $results);
+            $results = implode("", $krr);
+            $stock->setReferencePanier($results);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $stock->setDateSaisie(new \DateTime());
+            //$stock->setOperateur($userRepository->findOneBy(["id" => 1]));
+            $stock->setEtat($etatsrepository->findOneBy(["id" => 1]));
+            $stock->setMouvement($mouvement);
+            $username = $this->getUser();
+            $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
+            $stock->setOperateur($user);
+            $stock->setCauseAnnulation("Remplacement des produits avariés");
+            $entityManager->persist($stock);
+            $entityManager->flush();
+
+            //return $this->redirectToRoute('nouveau');
+        }
+        return $this->render('gestion_stocks/remplacement.html.twig',[
+            'stock' => $stock,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/gestion/avarie", name="avarie", methods={"GET","POST"})
+     */
+    public function avarie(Request $request, UserRepository $userRepository, EtatsRepository $etatsrepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $stock = new Stocks;
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $mouvement = $mouvementsRepository->findOneBy(["id" => 2]);
+        $form = $this->createForm(SortieType::class, $stock);
+        $form->handleRequest($request);
+        $reference = $form->get('referencePanier')->getData();
+        if($reference == ''){
+            $daty   = new \DateTime(); //this returns the current date time
+            $results = $daty->format('Y-m-d-H-i-s');
+            $krr    = explode('-', $results);
+            $results = implode("", $krr);
+            $stock->setReferencePanier($results);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $stock->setDateSaisie(new \DateTime());
+            //$stock->setOperateur($userRepository->findOneBy(["id" => 1]));
+            $stock->setEtat($etatsrepository->findOneBy(["id" => 1]));
+            $stock->setMouvement($mouvement);
+            $username = $this->getUser();
+            $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
+            $stock->setOperateur($user);
+            $stock->setCauseAnnulation("Retrait des produits avariés");
+            $entityManager->persist($stock);
+            $entityManager->flush();
+
+            //return $this->redirectToRoute('nouveau');
+        }
+        return $this->render('gestion_stocks/avarie.html.twig',[
             'stock' => $stock,
             'form' => $form->createView(),
         ]);

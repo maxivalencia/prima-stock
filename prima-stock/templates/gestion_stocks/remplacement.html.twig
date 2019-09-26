@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}remplacement de produit dans stock{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <h1>Remplacement de produit avarié</h1>
+    </div>
+    <hr>
+
+    {{ form(form) }}
+
+    <a href="{{ path('saisies') }}" class="btn btn-danger">Terminer</a>
+
+</div>
+{% endblock %}

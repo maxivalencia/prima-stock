@@ -48,6 +48,11 @@ class User
      */
     private $stocks;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Access", inversedBy="users")
+     */
+    private $access;
+
     public function __construct()
     {
         $this->autorisations = new ArrayCollection();
@@ -176,6 +181,18 @@ class User
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    public function getAccess(): ?Access
+    {
+        return $this->access;
+    }
+
+    public function setAccess(?Access $access): self
+    {
+        $this->access = $access;
+
+        return $this;
     }
 
 }
