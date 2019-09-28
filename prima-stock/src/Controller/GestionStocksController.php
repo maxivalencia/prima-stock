@@ -32,6 +32,9 @@ use App\Repository\ConversionsRepository;
 use App\Repository\ProduitsRepository;
 use App\Repository\ProjetRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 //use Doctrine\Common\Collections\Collection;
 
@@ -764,4 +767,62 @@ class GestionStocksController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * @Route("/{ref}/pdf", name="pdf", methods={"GET"})
+     */
+    public function pdf(int $ref, UserRepository $userRepository, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+        $stock = new Stocks();
+        $reference = $ref;
+        $client = "";
+        $projet = "";
+        $opera = $this->getUser();
+        $utilisateur = $userRepository->findOneBy(["login" => $opera->getUsername()]);
+        $operateur = $utilisateur->getNom().' '.$utilisateur->getPrenom();
+        $pagination = $paginator->paginate(
+            $stocksRepository->findGroupValidation($reference ), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
+        foreach($pagination as $page){
+            //$stock_restant[$i] = $this->reste($page);
+            //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
+            $client = $page->getClient();
+            $projet = $page->getProjet();
+            //$i++;
+        }
+       /*  return $this->render('gestion_stocks/historiques_details.html.twig',[
+            'stocks' => $pagination,
+            'reference' => $reference,
+            'client' => $client,
+            'projet' => $projet,
+        ]); */
+        //$piecejointe = $piecesJointesRepository->findBy(['referencePJ' => $dossier->getPiecejointes()]);
+        $date = new \DateTime();
+        $logo = $this->getParameter('image').'/LOGOFINAL.GIF';
+        $html = $this->renderView('gestion_stocks/pdfsaisie.html.twig', [
+            'stocks' => $stocksRepository->findGroupValidation($reference ),
+            //'piecejointe' => $piecejointe,
+            'logo' => $logo,
+            'reference' => $reference,
+            'date' => $date,
+            'operateur' => $operateur,
+            'objet' => $projet,
+            'client' => $client,
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        //$fichier = $dossier->getObjet();
+        $dompdf->stream("mouvement_".$reference.".pdf", [
+            "Attachment" => true
+        ]);
+
+    }
+
 }

@@ -20,7 +20,7 @@
                 {# <th>CauseAnnulation</th> #}
                 <th>Date Saisie</th>
                 {# <th>DateValidation</th> #}
-                <th>Reférence</th>
+                <th>Détails</th>
                 {# <th>actions</th> #}
             </tr>
         </thead>
@@ -33,7 +33,7 @@
                 {# <td>{{ stock.causeAnnulation }}</td> #}
                 <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
                 {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
-                <td>{{ stock.referencePanier }}</td>
+                <td>{{ stock.causeAnnulation }}</td>
                 <td>
                     {# <a href="{{ path('validation', {'id': stock.id}) }}" class="btn btn-primary">voir</a> #}
                     {# <a href="{{ path('stocks_edit', {'id': stock.id}) }}" class="btn btn-danger">edit</a> #}
@@ -54,5 +54,7 @@
     <a href="{{ path('historiques') }}" class="btn btn-primary">Retour</a>
     {# <a href="{{ path('modifier', {'ref': reference}) }}" class="btn btn-success">Modifier</a>
     <a href="{{ path('annuler', {'ref': reference}) }}" class="btn btn-danger">Annuler</a> #}
+
+    <a href="{{ path('pdf', {'ref': reference}) }}" class="btn btn-primary">Imprimer</a>
 </div>
 {% endblock %}

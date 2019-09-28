@@ -1,0 +1,67 @@
+{# {% extends 'base.html.twig' %} #}
+
+{# {% block title %}impression de mouvement{% endblock %} #}
+
+{% block body %}
+<div class="container" style="margin-left:20px">
+    <div class="row" align="center">
+        <img src="{{ logo }}" alt="logo" height=150px type="images/png">
+    </div>
+    <div class="row" align="center">
+        <h1>Bon de sortie</h1>
+    </div>
+    <div class="row">
+        <h3>Référence : {{ reference }}</h3>
+        <p><strong>Date et heure : </strong>{{ "now"|date('Y-m-d H:i:s') }}</p>
+    {# <h3>Demandeur : </h3>#}
+        <p><strong>Opérateur : </strong>{{ operateur }}</p>
+        <p><strong>Objet : </strong>{{ objet }}</p>
+        <p><strong>Ticket : </strong></p>
+        <p><strong>Client : </strong>{{ client }}</p>
+        {# <p><strong>Code Site et PROJET : <strong></p> #}
+    </div>{# 
+    <div class="row">
+        <h3>Réf GDA :</h3>
+    </div> #}
+    <table class="table" border="1px">
+        <thead>
+            <tr>
+                <th width="20px" align="center">Item</th>
+                <th width="20px" align="center">Produit</th>
+                <th width="200px" align="center">Désignation</th>
+                <th width="20px" align="center">Unité</th>
+                {# <th>CauseAnnulation</th> #}
+                <th width="20px" align="center">Quantite</th>
+                {# <th>DateValidation</th> #}
+                <th width="100px" align="center">Remarque</th>
+                {# <th>actions</th> #}
+            </tr>
+        </thead>
+        <tbody>
+        {% set myVal = 1 %}
+        {% for stock in stocks %}
+            <tr>
+                <td align="center">{{ myVal }}</td>
+                <td align="center">{{ stock.produit.designation }}</td>
+                <td>{{ stock.produit }}</td>
+                <td align="center">{{ stock.unite}}</td>
+                <td align="center">{{ stock.quantite }}</td>
+                {# <td>{{ stock.causeAnnulation }}</td> #}
+                {# <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td> #}
+                {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
+                <td>{{ stock.causeAnnulation }}</td>
+                {# <td> #}
+                    {# <a href="{{ path('validation', {'id': stock.id}) }}" class="btn btn-primary">voir</a> #}
+                    {# <a href="{{ path('stocks_edit', {'id': stock.id}) }}" class="btn btn-danger">edit</a> #}
+                {# </td> #}
+            </tr>
+            {% set myVal = myVal + 1 %}
+        {% else %}
+            <tr>
+                <td colspan="7">Aucun enregistrement trouver!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
