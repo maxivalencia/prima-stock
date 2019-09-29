@@ -5,7 +5,11 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <h1>Historique de mouvement</h1>
+        {% if recherche is defined %} 
+            <h1>Recheche sur {{ recherche }}</h1>
+        {% else %} 
+            <h1>Historique de mouvement</h1>
+        {% endif %} 
     </div>
     <hr>
 

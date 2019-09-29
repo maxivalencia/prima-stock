@@ -825,4 +825,24 @@ class GestionStocksController extends AbstractController
 
     }
 
+
+    /**
+     * @Route("/gestion/rechercher", name="rechercher", methods={"GET","POST"})
+     */
+    public function rechercher(StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $stock = new Stocks();
+        //$recherche = '';
+        $recherche = $request->query->get('search');
+        $pagination = $paginator->paginate(
+            $stocksRepository->findRecherche($recherche), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
+        return $this->render('gestion_stocks/historiques.html.twig',[
+            'stocks' => $pagination,
+            'recherche' => $recherche,
+        ]);
+    }
+
 }

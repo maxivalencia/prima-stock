@@ -3,6 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Stocks;
+use App\Entity\Produits;
+use App\Entity\Projet;
+use App\Entity\Clients;
+use App\Repository\ProduitsRepository;
+use App\Repository\ProjetRepository;
+use App\Repository\ClientsRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -117,6 +123,41 @@ class StocksRepository extends ServiceEntityRepository
             ->groupBy('s.produit')
             //->groupBy('s.mouvement')
             //->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    /**
+     * @return Stocks[] Returns an array of Stocks objects
+     */    
+    public function findRecherche($recherche)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $produitsRepository = $entityManager->getRepository(Produits::class);
+        $projetRepository = $entityManager->getRepository(Projet::class);
+        $clientRepository = $entityManager->getRepository(Clients::class);
+        $produits1 = $produitsRepository->findOneBy(["produit" => $recherche]);
+        $produits2 = $produitsRepository->findOneBy(["designation" => $recherche]);
+        $projet = $projetRepository->findOneBy(["nom" => $recherche]);
+        $client = $clientsRepository->findOneBy(["nom" => $recherche]);
+        return $this->createQueryBuilder('s')
+            ->Where('s.referencePanier LIKE :val1')
+            ->orWhere('s.produit = :val2')
+            ->orWhere('s.produit = :val3')
+            ->orWhere('s.projet = :val4')
+            ->orWhere('s.client = :val5')
+            //->setParameter('val', $value)
+            ->setParameter('val1', '%'.$recherche.'%')
+            ->setParameter('val2', $produits1)
+            ->setParameter('val3', $produits2)
+            ->setParameter('val4', $projet)
+            ->setParameter('val5', $client)
+            //->setParameter('val5', date_create($recherche.' 00:00:00'))
+            //->setParameter('val6', date_create($recherche.' 23:59:59'))
+            ->groupBy('s.referencePanier')
+            ->orderBy('s.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;

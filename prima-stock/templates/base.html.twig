@@ -23,10 +23,10 @@
                 <p class="page-name d-none d-lg-block">PRIMA-STOCK</p>
                 <ul class="navbar-nav ml-lg-auto">
                 <li class="nav-item">
-                    <form class="mt-2 mt-md-0 d-none d-lg-block search-input">
+                    <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('rechercher') }}">
                     <div class="input-group">
                         <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
-                        <input type="text" class="form-control" placeholder="Search...">
+                        <input type="text" name="search" class="form-control" placeholder="Search...">
                     </div>
                     </form>
                 </li>

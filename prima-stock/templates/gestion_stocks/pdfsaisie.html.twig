@@ -1,7 +1,34 @@
 {# {% extends 'base.html.twig' %} #}
 
 {# {% block title %}impression de mouvement{% endblock %} #}
+{# <link href="/css/pdf.css" rel="stylesheet"/> #}
+<style>
+    table thead tr th {
+        border: 0;
+    }
 
+    table tbody tr td {
+        border: 1px solid #ccc;
+    }
+
+    .tableau {
+        border-collapse: collapse;
+        border-spacing: 0px;
+        border: 1px solid black;
+    }
+
+    .tableau thead tr th,
+    .tableau tbody tr td {
+        border: 1px solid black;
+    }
+
+    th {
+        background: rgb(130, 130, 130);
+        height: 30px;
+        vertical-align: middle;
+        align: center;
+    }
+</style>
 {% block body %}
 <div class="container" style="margin-left:20px">
     <div class="row" align="center">
@@ -10,7 +37,7 @@
     <div class="row" align="center">
         <h1>Bon de sortie</h1>
     </div>
-    <div class="row">
+    <div class="row" style="margin-left:50px">
         <h3>Référence : {{ reference }}</h3>
         <p><strong>Date et heure : </strong>{{ "now"|date('Y-m-d H:i:s') }}</p>
     {# <h3>Demandeur : </h3>#}
@@ -23,7 +50,7 @@
     <div class="row">
         <h3>Réf GDA :</h3>
     </div> #}
-    <table class="table" border="1px">
+    <table class="tableau">
         <thead>
             <tr>
                 <th width="20px" align="center">Item</th>
@@ -31,9 +58,9 @@
                 <th width="200px" align="center">Désignation</th>
                 <th width="20px" align="center">Unité</th>
                 {# <th>CauseAnnulation</th> #}
-                <th width="20px" align="center">Quantite</th>
+                <th width="20px" align="center">Quantité</th>
                 {# <th>DateValidation</th> #}
-                <th width="100px" align="center">Remarque</th>
+                <th width="100px" align="center">REMARQUES</th>
                 {# <th>actions</th> #}
             </tr>
         </thead>
