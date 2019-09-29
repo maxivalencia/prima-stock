@@ -17,6 +17,7 @@ use App\Entity\Unites;
 use App\Entity\Conversions;
 use App\Entity\Produits;
 use App\Entity\Projet;
+use App\Entity\Clients;
 use App\Form\NouveauType;
 use App\Form\EntrerType;
 use App\Form\SortieType;
@@ -31,6 +32,7 @@ use App\Repository\UnitesRepository;
 use App\Repository\ConversionsRepository;
 use App\Repository\ProduitsRepository;
 use App\Repository\ProjetRepository;
+use App\Repository\ClientsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -831,11 +833,19 @@ class GestionStocksController extends AbstractController
      */
     public function rechercher(StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $recherche = $request->query->get('search');
+        $entityManager = $this->getDoctrine()->getManager();
+        $produitsRepository = $entityManager->getRepository(Produits::class);
+        $projetRepository = $entityManager->getRepository(Projet::class);
+        $clientsRepository = $entityManager->getRepository(Clients::class);
+        $produits1 = $produitsRepository->findOneBy(["produit" => $recherche]);
+        $produits2 = $produitsRepository->findOneBy(["designation" => $recherche]);
+        $projet = $projetRepository->findOneBy(["nom" => $recherche]);
+        $client = $clientsRepository->findOneBy(["nom" => $recherche]);
         $stock = new Stocks();
         //$recherche = '';
-        $recherche = $request->query->get('search');
         $pagination = $paginator->paginate(
-            $stocksRepository->findRecherche($recherche), /* query NOT result */
+            $stocksRepository->findRecherche($recherche, $produits1, $produits2, $projet, $client), /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             10/*limit per page*/
         );

@@ -132,16 +132,8 @@ class StocksRepository extends ServiceEntityRepository
     /**
      * @return Stocks[] Returns an array of Stocks objects
      */    
-    public function findRecherche($recherche)
+    public function findRecherche($recherche, $produits1, $produits2, $projet, $client)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $produitsRepository = $entityManager->getRepository(Produits::class);
-        $projetRepository = $entityManager->getRepository(Projet::class);
-        $clientRepository = $entityManager->getRepository(Clients::class);
-        $produits1 = $produitsRepository->findOneBy(["produit" => $recherche]);
-        $produits2 = $produitsRepository->findOneBy(["designation" => $recherche]);
-        $projet = $projetRepository->findOneBy(["nom" => $recherche]);
-        $client = $clientsRepository->findOneBy(["nom" => $recherche]);
         return $this->createQueryBuilder('s')
             ->Where('s.referencePanier LIKE :val1')
             ->orWhere('s.produit = :val2')
