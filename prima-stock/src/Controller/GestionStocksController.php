@@ -36,6 +36,7 @@ use App\Repository\ClientsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 //use Doctrine\Common\Collections\Collection;
@@ -508,16 +509,38 @@ class GestionStocksController extends AbstractController
                     if($valeur_unite_bas < $conversion->getValeur()){
                         $valeur_unite_bas = $conversion->getValeur();
                         $unite_bas = $conversion->getUnitesdestinataire();
+                        /* foreach($autre_unite_sup as $autre){
+                            if($autre != $conversion->getUnitesdestinataire()){
+                                $autre_unite_sup [] = $conversion->getUnitesdestinataire()->getSigle();
+                                $autre_valeur_sup [] = $conversion->getValeur();
+                                $i++;
+                            }
+                        } */
+                        /* $autre_unite_sup [] = $conversion->getUnitesdestinataire()->getSigle();
+                        $autre_valeur_sup [] = $conversion->getValeur(); */
                     }
+                    //if($valeur_unite_bas >= $conversion->getValeur()){
+                       /*  $valeur_unite_bas = $conversion->getValeur();
+                        $unite_bas = $conversion->getUnitesdestinataire(); */
+                        /* foreach($autre_unite_inf as $autre){
+                            if($autre != $conversion->getUnitesource()){
+                                $autre_unite_inf[$i] = $conversion->getUnitesource()->getSigle();
+                                $autre_valeur_inf[$i] = $conversion->getValeur();
+                                $j++;
+                            }
+                        }  */
+                        /* $autre_unite_inf [] = $conversion->getUnitesdestinataire()->getSigle();
+                        $autre_valeur_inf [] = $conversion->getValeur(); */
+                    //}
                     // préparation du calcul des autres unité
-                    foreach($autre_unite_sup as $autre){
+                    /* foreach($autre_unite_sup as $autre){
                         if($autre != $conversion->getUnitesdestinataire()){
-                            $autre_unite_sup [$i] = $conversion->getUnitesdestinataire();
-                            $autre_valeur_sup [$i] = $conversion->getValeur();
+                            $autre_unite_sup [] = $conversion->getUnitesdestinataire();
+                            $autre_valeur_sup [] = $conversion->getValeur();
                             $i++;
                         }
-                    }
-                    /* foreach($autre_unite_inf as $autre){
+                    } *//* 
+                    foreach($autre_unite_inf as $autre){
                         if($autre != $conversion->getUnitesource()){
                             $autre_unite_inf[$i] = $conversion->getUnitesource();
                             $autre_valeur_inf[$i] = $conversion->getValeur();
@@ -545,12 +568,27 @@ class GestionStocksController extends AbstractController
             }
         }
         $k = 0;
+        $convers = " ";
+        foreach($conversionsRepository->findAll() as $conv){
+            if(/* $conv->getUnitesource()->getSigle()==$unite_bas |  */$conv->getUnitesdestinataire()->getSigle()==$unite_bas){
+                $res = $total / $conv->getValeur();
+                $convers = $convers.' | '.$res.' '.$conv->getUnitesource()->getSigle();
+                $k++;
+            }
+        }
+        /* $k = 0;
         $convers = " | ";
         foreach($autre_unite_sup as $autresup){
             $res = $autre_valeur_sup[$k] * $total;
-            $convers = $convers.' | '.$res.' '.$autre_unite_sup;
+            $convers = $convers.' | '.$res.' '.$autre_unite_sup[$k];
             $k++;
         }
+        $k = 0;
+        foreach($autre_unite_inf as $autresup){
+            $res = $autre_valeur_inf[$k] / $total;
+            $convers = $convers.' | '.$res.' '.$autre_unite_inf[$k];
+            $k++;
+        } */
         return $total.' '.$unite_bas.' '.$convers;        
     }
 
@@ -853,6 +891,21 @@ class GestionStocksController extends AbstractController
             'stocks' => $pagination,
             'recherche' => $recherche,
         ]);
+    }    
+    /**
+     * @Route("/avalider", name="avalider", methods={"GET"})
+     */
+    public function avalider(StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request)
+    {
+        $etat = new Etats();
+        $stock = new Stocks();
+        $etat = $etatsRepository->findOneBy(["etat" => "en attente de validation"]);
+        $stocks = $stocksRepository->findByGroup($etat->getId());
+        $dataReceive = 0;
+        foreach($stocks as $sto){
+            $dataReceive++;
+        }
+        return new JsonResponse(['numberAjax' => 200, "dataResponse" => $dataReceive]);  
     }
 
 }
