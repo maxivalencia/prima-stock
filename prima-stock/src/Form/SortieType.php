@@ -27,7 +27,9 @@ class SortieType extends AbstractType
             ->add('unite')
             ->add('projet')
             //->add('mouvement')
-            ->add('client')
+            ->add('Site')
+            ->add('AutreSource')
+            ->add('Remarque')
             ->add('Ajouter', SubmitType::class)
         ;
     }

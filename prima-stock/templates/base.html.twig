@@ -10,6 +10,7 @@
         <link href="/dist/css/bootstrap.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/notif.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -66,7 +67,7 @@
                 </li> #}
                 <li class="nav-item">
                 <a class="nav-link" href="{{ path('entrer') }}">
-                    <span class="menu-title">Entrer</span>
+                    <span class="menu-title">Entrée</span>
                     <i class="icon-speedometer menu-icon"></i>
                 </a>
                 </li>
@@ -82,12 +83,12 @@
                     <i class="icon-speedometer menu-icon"></i>
                 </a>
                 </li>
-                <li class="nav-item">
+                {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('remplacement') }}">
                     <span class="menu-title">Remplacement</span>
                     <i class="icon-speedometer menu-icon"></i>
                 </a>
-                </li>
+                </li> #}
                 <li class="nav-item">
                 <a class="nav-link" href="{{ path('avarie') }}">
                     <span class="menu-title">Avarié</span>
@@ -119,7 +120,8 @@
                 </a>
                 </li>
                 <li class="nav-item nav-category">
-                <span class="nav-link">ADMINISTRATION</span>
+                {# <span class="nav-link">ADMINISTRATION</span> #}
+                <hr>
                 </li>
                 {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('stocks_index') }}">
@@ -144,11 +146,11 @@
                     <i class="icon-grid menu-icon"></i>
                 </a>
                 </li> #}
-                <li class="nav-item">
+                {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('clients_index') }}">
                     <span class="menu-title">Clients</span>
                     <i class="icon-grid menu-icon"></i>
-                </a>
+                </a> #}
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="{{ path('projet_index') }}">
@@ -180,12 +182,12 @@
                     <i class="icon-grid menu-icon"></i>
                 </a>
                 </li>
-                <li class="nav-item">
+                {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('type_produits_index') }}">
                     <span class="menu-title">Type de produit</span>
                     <i class="icon-grid menu-icon"></i>
                 </a>
-                </li>
+                </li> #}
                 {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('mouvements_index') }}">
                     <span class="menu-title">Mouvement</span>
@@ -239,6 +241,7 @@
         <!-- inject:js -->
         <script src="/js/off-canvas.js"></script>
         <script src="/js/misc.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
         <script src="/js/notif.js"></script>
         <!-- endinject -->
         <!-- Custom js for this page-->

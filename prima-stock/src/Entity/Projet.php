@@ -39,9 +39,25 @@ class Projet
      */
     private $stocks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Stocks", mappedBy="AutreSource")
+     */
+    private $stocksSource;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Lieu;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Site;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
+        $this->stocksSource = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,6 +139,61 @@ class Projet
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    /**
+     * @return Collection|Stocks[]
+     */
+    public function getStocksSource(): Collection
+    {
+        return $this->stocksSource;
+    }
+
+    public function addStocksSource(Stocks $stocksSource): self
+    {
+        if (!$this->stocksSource->contains($stocksSource)) {
+            $this->stocksSource[] = $stocksSource;
+            $stocksSource->setAutreSource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStocksSource(Stocks $stocksSource): self
+    {
+        if ($this->stocksSource->contains($stocksSource)) {
+            $this->stocksSource->removeElement($stocksSource);
+            // set the owning side to null (unless already changed)
+            if ($stocksSource->getAutreSource() === $this) {
+                $stocksSource->setAutreSource(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->Lieu;
+    }
+
+    public function setLieu(?string $Lieu): self
+    {
+        $this->Lieu = $Lieu;
+
+        return $this;
+    }
+
+    public function getSite(): ?string
+    {
+        return $this->Site;
+    }
+
+    public function setSite(?string $Site): self
+    {
+        $this->Site = $Site;
+
+        return $this;
     }
 
 }

@@ -108,6 +108,21 @@ class Stocks
      */
     private $referencePanier;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Projet", inversedBy="stocksSource")
+     */
+    private $AutreSource;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Site;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $Remarque;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
@@ -337,6 +352,42 @@ class Stocks
     public function setReferencePanier(string $referencePanier): self
     {
         $this->referencePanier = $referencePanier;
+
+        return $this;
+    }
+
+    public function getAutreSource(): ?Projet
+    {
+        return $this->AutreSource;
+    }
+
+    public function setAutreSource(?Projet $AutreSource): self
+    {
+        $this->AutreSource = $AutreSource;
+
+        return $this;
+    }
+
+    public function getSite(): ?string
+    {
+        return $this->Site;
+    }
+
+    public function setSite(?string $Site): self
+    {
+        $this->Site = $Site;
+
+        return $this;
+    }
+
+    public function getRemarque(): ?string
+    {
+        return $this->Remarque;
+    }
+
+    public function setRemarque(?string $Remarque): self
+    {
+        $this->Remarque = $Remarque;
 
         return $this;
     }

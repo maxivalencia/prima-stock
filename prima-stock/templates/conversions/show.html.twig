@@ -12,12 +12,20 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ conversion.id }}</td>
+                <td>Produit</td>
+                <td>{{ conversion.produits }}</td>
             </tr>
             <tr>
-                <th>Valeur</th>
+                <td>Unité source</td>
+                <td>{{ conversion.unitesource }}</td>
+            </tr>
+            <tr>
+                <td>Valeur</td>
                 <td>{{ conversion.valeur }}</td>
+            </tr>
+            <tr>
+                <td>Unité destinataire</td>
+                <td>{{ conversion.unitesdestinataire }}</td>
             </tr>
         </tbody>
     </table>

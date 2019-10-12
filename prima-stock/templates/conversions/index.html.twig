@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 {# <th>Id</th> #}
+                <th>Produit</th>
                 <th>Unité d'origine</th>
                 <th>Valeur de conversion</th>
                 <th>Unité de conversion</th>
@@ -23,6 +24,7 @@
         {% for conversion in conversions %}
             <tr>
                 {# <td>{{ conversion.id }}</td> #}
+                <td>{{ conversion.produits }}</td>
                 <td>{{ conversion.unitesource }}</td>
                 <td>{{ conversion.valeur }}</td>
                 <td>{{ conversion.unitesdestinataire }}</td>

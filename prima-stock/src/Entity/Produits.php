@@ -32,16 +32,22 @@ class Produits
      * @ORM\ManyToOne(targetEntity="App\Entity\TypeProduits", inversedBy="produits")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $typeProduit;
+    /* private $typeProduit; */
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Stocks", mappedBy="produit")
      */
     private $stocks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Conversions", mappedBy="produits")
+     */
+    private $conversions;
+
     public function __construct()
     {
         $this->stocks = new ArrayCollection();
+        $this->conversions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,6 +129,37 @@ class Produits
     public function __toString()
     {
         return $this->getProduit();
+    }
+
+    /**
+     * @return Collection|Conversions[]
+     */
+    public function getConversions(): Collection
+    {
+        return $this->conversions;
+    }
+
+    public function addConversion(Conversions $conversion): self
+    {
+        if (!$this->conversions->contains($conversion)) {
+            $this->conversions[] = $conversion;
+            $conversion->setProduits($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversion(Conversions $conversion): self
+    {
+        if ($this->conversions->contains($conversion)) {
+            $this->conversions->removeElement($conversion);
+            // set the owning side to null (unless already changed)
+            if ($conversion->getProduits() === $this) {
+                $conversion->setProduits(null);
+            }
+        }
+
+        return $this;
     }
 
 }

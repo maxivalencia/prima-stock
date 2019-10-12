@@ -506,7 +506,7 @@ class GestionStocksController extends AbstractController
                     $unite_bas = $unite->getSigle();
                 }
                 foreach($conversionsRepository->findby(["unitesource" => $unite]) as $conversion){
-                    if($valeur_unite_bas < $conversion->getValeur()){
+                    if($valeur_unite_bas < $conversion->getValeur() && $conversion->getProduits() == $stock->getProduit()){
                         $valeur_unite_bas = $conversion->getValeur();
                         $unite_bas = $conversion->getUnitesdestinataire();
                         /* foreach($autre_unite_sup as $autre){
@@ -648,6 +648,7 @@ class GestionStocksController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $stock = new Stocks;
+        $stock2 = new Stocks;
         $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
         $mouvement = $mouvementsRepository->findOneBy(["id" => 2]);
         $form = $this->createForm(SortieType::class, $stock);
@@ -672,6 +673,11 @@ class GestionStocksController extends AbstractController
             $stock->setOperateur($user);
             $stock->setCauseAnnulation("Sortie standard");
             $entityManager->persist($stock);
+            if($stock->getAutreSource() != null){
+                $stock2 = $stock->getAutreSource();
+                $stock2->setQuantite($stock->getQuantite());
+                $stock->setCauseAnnulation("insuffisante de stock pour :".$stock2->getCauseAnnulation());
+            }
             $entityManager->flush();
 
             //return $this->redirectToRoute('nouveau');

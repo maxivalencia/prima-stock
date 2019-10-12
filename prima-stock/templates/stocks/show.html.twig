@@ -12,27 +12,27 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <td>Id</td>
                 <td>{{ stock.id }}</td>
             </tr>
             <tr>
-                <th>Quantite</th>
+                <td>Quantite</td>
                 <td>{{ stock.quantite }}</td>
             </tr>
             <tr>
-                <th>CauseAnnulation</th>
+                <td>CauseAnnulation</td>
                 <td>{{ stock.causeAnnulation }}</td>
             </tr>
             <tr>
-                <th>DateSaisie</th>
+                <td>DateSaisie</td>
                 <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>DateValidation</th>
+                <td>DateValidation</td>
                 <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>ReferencePanier</th>
+                <td>ReferencePanier</td>
                 <td>{{ stock.referencePanier }}</td>
             </tr>
         </tbody>

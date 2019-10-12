@@ -14,7 +14,7 @@ class ProduitsType extends AbstractType
         $builder
             ->add('produit')
             ->add('designation')
-            ->add('typeProduit')
+            //->add('typeProduit')
         ;
     }
 

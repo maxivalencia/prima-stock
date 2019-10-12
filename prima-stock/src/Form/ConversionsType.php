@@ -12,9 +12,10 @@ class ConversionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('valeur')
             ->add('unitesource')
+            ->add('valeur')
             ->add('unitesdestinataire')
+            ->add('produits')
         ;
     }
 

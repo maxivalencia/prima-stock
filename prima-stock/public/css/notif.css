@@ -11,3 +11,54 @@
     margin-top: -11px;
     font-size: 11px;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(68, 68, 114);
+}
+
+td {
+    border-right: 2px solid white;
+}
+
+tr:nth-child(even) td {
+    border-color: rgb(68, 68, 114);
+}
+
+t td:last-child {
+    border: none;
+}
+
+
+/* th:nth-child(even) td {
+    border-color: lightgrey;
+} */
+
+th {
+    border-top: none;
+    border-left: rgb(68, 68, 114);
+    border-width: 1px;
+    border-color: rgb(68, 68, 114);
+    background-color: lightgrey;
+}
+
+tr th {
+    background-color: lightgrey;
+}
+
+
+/* td {
+    border-right: 2px solid white;
+} */
+
+tr:nth-child(even) th {
+    border-color: rgb(68, 68, 114);
+}
+
+
+/* t td:last-child {
+    border: none;
+} */

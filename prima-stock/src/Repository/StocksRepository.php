@@ -134,18 +134,23 @@ class StocksRepository extends ServiceEntityRepository
      */    
     public function findRecherche($recherche, $produits1, $produits2, $projet, $client)
     {
+        $myDateTime = new DateTime($recherche);
         return $this->createQueryBuilder('s')
             ->Where('s.referencePanier LIKE :val1')
             ->orWhere('s.produit = :val2')
             ->orWhere('s.produit = :val3')
             ->orWhere('s.projet = :val4')
             ->orWhere('s.client = :val5')
+            ->orWhere('s.dateSaisie = :val6')
+            ->orWhere('s.dateValidation = :val7')
             //->setParameter('val', $value)
             ->setParameter('val1', '%'.$recherche.'%')
             ->setParameter('val2', $produits1)
             ->setParameter('val3', $produits2)
             ->setParameter('val4', $projet)
             ->setParameter('val5', $client)
+            ->setParameter('val6', $myDateTime)
+            ->setParameter('val7', $myDateTime)
             //->setParameter('val5', date_create($recherche.' 00:00:00'))
             //->setParameter('val6', date_create($recherche.' 23:59:59'))
             ->groupBy('s.referencePanier')

@@ -14,7 +14,9 @@ class ProjetType extends AbstractType
         $builder
             ->add('nom')
             ->add('reference')
-            ->add('client')
+            //->add('client')
+            ->add('Lieu')
+            //->add('Site')
         ;
     }
 

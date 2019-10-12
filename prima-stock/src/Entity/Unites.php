@@ -38,10 +38,16 @@ class Unites
      */
     private $stocks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Conversions", mappedBy="produit")
+     */
+    private $conversion;
+
     public function __construct()
     {
         $this->conversions = new ArrayCollection();
         $this->stocks = new ArrayCollection();
+        $this->conversion = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +148,14 @@ class Unites
     public function __toString()
     {
         return $this->getSigle();
+    }
+
+    /**
+     * @return Collection|Conversions[]
+     */
+    public function getConversion(): Collection
+    {
+        return $this->conversion;
     }
 
 }

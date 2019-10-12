@@ -33,6 +33,16 @@ class Conversions
      */
     private $valeur;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Unites", inversedBy="conversion")
+     */
+    //private $produit;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Produits", inversedBy="conversions")
+     */
+    private $produits;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +80,30 @@ class Conversions
     public function setValeur(float $valeur): self
     {
         $this->valeur = $valeur;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Unites
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Unites $produit): self
+    {
+        $this->produit = $produit;
+
+        return $this;
+    }
+
+    public function getProduits(): ?Produits
+    {
+        return $this->produits;
+    }
+
+    public function setProduits(?Produits $produits): self
+    {
+        $this->produits = $produits;
 
         return $this;
     }
