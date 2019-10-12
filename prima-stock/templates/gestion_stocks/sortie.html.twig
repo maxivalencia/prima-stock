@@ -8,11 +8,16 @@
     <div class="row">
         <h1>Sortie de produit</h1>
     </div>
+        <h2>stock restant : <span id="restant"></span></h2>
     <hr>
 
     {{ form(form) }}
 
     <a href="{{ path('saisies') }}" class="btn btn-danger">Terminer</a>
+
+    <br>
+    <div id="fileuploader">Upload</div>
+
 
 </div>
 {% endblock %}

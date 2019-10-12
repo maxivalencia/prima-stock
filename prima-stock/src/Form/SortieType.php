@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Produits;
 
 class SortieType extends AbstractType
 {
@@ -22,7 +24,16 @@ class SortieType extends AbstractType
             ->add('referencePanier', HiddenType::class, [
                 'data' => $results,
             ])
-            ->add('produit')
+            ->add('produit', EntityType::class, [
+                'class' => Produits::class,
+                'label' => 'Unité destinataire',
+                'required' => true,
+                'attr' => [
+                    'class' => 'restante',
+                    'multiple' => false,
+                    'data-live-search' => true,
+                ],
+            ])
             ->add('quantite', TextType::class)
             ->add('unite')
             ->add('projet')
@@ -30,6 +41,10 @@ class SortieType extends AbstractType
             ->add('Site')
             ->add('AutreSource')
             ->add('Remarque')
+            ->add('piece', HiddenType::class, [
+                'label' => 'Pièces-jointes',
+                'required'   => false,
+            ])
             ->add('Ajouter', SubmitType::class)
         ;
     }
