@@ -11,6 +11,7 @@ use App\Repository\ProjetRepository;
 use App\Repository\ClientsRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @method Stocks|null find($id, $lockMode = null, $lockVersion = null)
@@ -141,18 +142,19 @@ class StocksRepository extends ServiceEntityRepository
             ->orWhere('s.produit = :val3')
             ->orWhere('s.projet = :val4')
             ->orWhere('s.client = :val5')
-            ->orWhere('s.dateSaisie = :val6')
-            ->orWhere('s.dateValidation = :val7')
+            ->orWhere('s.dateSaisie BETWEEN :val6 AND :val7')
+            ->orWhere('s.dateValidation BETWEEN :val6 AND :val7')
             //->setParameter('val', $value)
             ->setParameter('val1', '%'.$recherche.'%')
             ->setParameter('val2', $produits1)
             ->setParameter('val3', $produits2)
             ->setParameter('val4', $projet)
             ->setParameter('val5', $client)
-            ->setParameter('val6', $myDateTime)
-            ->setParameter('val7', $myDateTime)
-            //->setParameter('val5', date_create($recherche.' 00:00:00'))
-            //->setParameter('val6', date_create($recherche.' 23:59:59'))
+            //->setParameter('val6', $myDateTime)
+            //->setParameter('val7', $myDateTime)
+            //->andWhere('d.objet LIKE :val4 OR d.daterecepeffectif BETWEEN  :val5 AND :val6')
+            ->setParameter('val6', date_create($recherche.' 00:00:00'))
+            ->setParameter('val7', date_create($recherche.' 23:59:59'))
             ->groupBy('s.referencePanier')
             ->orderBy('s.id', 'DESC')
             ->getQuery()

@@ -18,8 +18,8 @@
             <!-- partial:partials/_navbar.html -->
             <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper">
-                <a class="navbar-brand brand-logo" href="index.html"><img src="/images/logo.JPEG" alt="logo"></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/images/profile.svg" alt="profil"></a>
+                <a class="navbar-brand brand-logo" href="{{ path('entrer') }}"><img src="/images/logo.JPEG" alt="logo"></a>
+                <a class="navbar-brand brand-logo-mini" href="{{ path('entrer') }}"><img src="/images/profile.svg" alt="profil"></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center">
                 <p class="page-name d-none d-lg-block">PRIMA-STOCK</p>
@@ -56,6 +56,7 @@
             <!-- partial:partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
+                {% if is_granted('ROLE_SAISISSEUR') %} 
                 <li class="nav-item nav-category">
                 <span class="nav-link">GESTION</span>
                 </li>
@@ -101,6 +102,8 @@
                     <i class="icon-speedometer menu-icon"></i>
                 </a>
                 </li> #}
+                {% endif %}
+                {% if is_granted('ROLE_VALIDATEUR') %} 
                 <li class="nav-item">
                 <a class="nav-link" href="{{ path('validations') }}">
                     <span class="menu-title">Validation<span class="notification_count"><span id="non">0</span></span></span>
@@ -123,6 +126,8 @@
                 {# <span class="nav-link">ADMINISTRATION</span> #}
                 <hr>
                 </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}                
                 {# <li class="nav-item">
                 <a class="nav-link" href="{{ path('stocks_index') }}">
                     <span class="menu-title">Historique</span>
@@ -212,6 +217,7 @@
                     <i class="icon-grid menu-icon"></i>
                 </a>
                 </li> #}
+                {% endif %}
             </ul>
             </nav>
             <!-- partial -->
@@ -232,7 +238,8 @@
             </footer>
             <!-- partial -->
         </div>
-        <input name="notif_validation" id="notif_validation" type="hidden" value="{{ path('avalider') }}">
+        <input name="notif_validation" id="notif_validation" type="hidden" value="{{ path('avalider') }}">        
+        {# <input name="upload_file" id="upload_file" type="hidden" value="{{ path('upload_file') }}"> #}
         <input name="notif_restant" id="notif_restant" type="hidden" value="{{ path('quantiterestant') }}">
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="http://hayageek.github.io/jQuery-Upload-File/4.0.11/jquery.uploadfile.min.js"></script>

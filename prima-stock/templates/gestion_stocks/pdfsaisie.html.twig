@@ -76,7 +76,7 @@
                 {# <td>{{ stock.causeAnnulation }}</td> #}
                 {# <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td> #}
                 {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
-                <td>{{ stock.causeAnnulation }}</td>
+                <td>{{ stock.causeAnnulation }} {{ stock.Remarque }}</td>
                 {# <td> #}
                     {# <a href="{{ path('validation', {'id': stock.id}) }}" class="btn btn-primary">voir</a> #}
                     {# <a href="{{ path('stocks_edit', {'id': stock.id}) }}" class="btn btn-danger">edit</a> #}

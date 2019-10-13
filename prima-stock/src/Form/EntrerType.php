@@ -27,7 +27,7 @@ class EntrerType extends AbstractType
             ->add('unite')
             ->add('projet')
             //->add('mouvement')
-            ->add('client')
+            //->add('client')
             ->add('Ajouter', SubmitType::class)
             ;
     }

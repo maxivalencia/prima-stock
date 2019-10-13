@@ -18,13 +18,15 @@ use App\Entity\Conversions;
 use App\Entity\Produits;
 use App\Entity\Projet;
 use App\Entity\Clients;
+use App\Entity\PieceJointe;
 use App\Form\NouveauType;
 use App\Form\EntrerType;
 use App\Form\SortieType;
 use App\Form\ModifierType;
 use App\Form\ProduitsType;
 use App\Form\ProjetType;
-use App\Form\PieceJointe;
+//use App\Form\PieceJointe;
+//use App\Entity\PieceJointe;
 use App\Repository\StocksRepository;
 use App\Repository\UserRepository;
 use App\Repository\MouvementsRepository;
@@ -39,7 +41,12 @@ use Knp\Component\Pager\PaginatorInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+//use Symfony\Component\HttpFoundation\Response;
+//use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+// Include PhpSpreadsheet required namespaces
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 //use Doctrine\Common\Collections\Collection;
 
@@ -350,9 +357,10 @@ class GestionStocksController extends AbstractController
     /**
      * @Route("/gestion/historiques/{ref}", name="historiques_details", methods={"GET","POST"})
      */
-    public function historiques_details(int $ref, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
+    public function historiques_details(int $ref, PieceJointeRepository $pieceJointeRepository, StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $stock = new Stocks();
+        $piecejointe[] = new PieceJointe();
         $reference = $ref;
         $client = "";
         $projet = "";
@@ -366,6 +374,7 @@ class GestionStocksController extends AbstractController
             //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
             $client = $page->getClient();
             $projet = $page->getProjet();
+            $piecejointe = $pieceJointeRepository->findBy(['reference' => $page->getPiece()]);
             //$i++;
         }
         return $this->render('gestion_stocks/historiques_details.html.twig',[
@@ -373,6 +382,7 @@ class GestionStocksController extends AbstractController
             'reference' => $reference,
             'client' => $client,
             'projet' => $projet,
+            'piecejointe' => $piecejointe,
         ]);
     }
 
@@ -629,14 +639,21 @@ class GestionStocksController extends AbstractController
             $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
             $stock->setOperateur($user);
             $stock->setCauseAnnulation("Entrer standard");
+            $stock->setPiece($reference);
             $entityManager->persist($stock);
             $entityManager->flush();
 
             //return $this->redirectToRoute('nouveau');
         }
+        
+        $daty   = new \DateTime(); //this returns the current date time
+        $results = $daty->format('Y-m-d-H-i-s');
+        $krr    = explode('-', $results);
+        $results = implode("", $krr).$this->generateUniqueFileName();
         return $this->render('gestion_stocks/entrer.html.twig',[
             'stock' => $stock,
             'form' => $form->createView(),
+            'refpiecejointe' => $reference,
         ]);
     }
 
@@ -674,6 +691,7 @@ class GestionStocksController extends AbstractController
             $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
             $stock->setOperateur($user);
             $stock->setCauseAnnulation("Sortie standard");
+            $stock->setPiece($reference);
             $entityManager->persist($stock);
             if($stock->getAutreSource() != null){
                 $stock2 = $stock->getAutreSource();
@@ -684,9 +702,17 @@ class GestionStocksController extends AbstractController
 
             //return $this->redirectToRoute('nouveau');
         }
+        
+        $daty   = new \DateTime(); //this returns the current date time
+        $results = $daty->format('Y-m-d-H-i-s');
+        $krr    = explode('-', $results);
+        $results = implode("", $krr).$this->generateUniqueFileName();
+
+        //$form->setReference($form->get('reference')->getData());
         return $this->render('gestion_stocks/sortie.html.twig',[
             'stock' => $stock,
             'form' => $form->createView(),
+            'refpiecejointe' => $reference,
         ]);
     }
 
@@ -965,7 +991,7 @@ class GestionStocksController extends AbstractController
         $file = $request->files->get('myfile');
         $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
         $file->move(
-            $this->getParameter('piece_jointe_directory'),
+            $this->getParameter('brochures_directory'),
             $fileName
         );
         $reference = $ref;//$request->request->get('piecejointes');
@@ -990,5 +1016,76 @@ class GestionStocksController extends AbstractController
         // md5() reduces the similarity of the file names generated by
         // uniqid(), which is based on timestamps
         return md5(uniqid());
+    }
+
+
+    /**
+     * @Route("/excel", name="excel", methods={"GET","POST"})
+     */
+    public function excel(StocksRepository $stocksRepository, EtatsRepository $etatsRepository, PaginatorInterface $paginator, Request $request, ProduitsRepository $produitsRepository)
+    {
+        $spreadsheet = new Spreadsheet();
+        
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet();
+        
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $stock_restant[] = new Stocks();
+        $etatsRepository = $entityManager->getRepository(Etats::class);
+        $etat = new Etats();
+        $etat = $etatsRepository->findOneBy(["id" => 4]);
+        $i = 0;
+        $mouvement_positif = new Mouvements();
+        $mouvement_negatif = new Mouvements();
+        $mouvementsRepository = $entityManager->getRepository(Mouvements::class);
+        $mouvement_positif = $mouvementsRepository->findOneBy(["id" => 1]);
+        $mouvement_negatif = $mouvementsRepository->findOneBy(["id" => 2]);
+        $conversionsRepository = $entityManager->getRepository(Conversions::class);
+        $total = array();
+        $valeur_unite_bas = 0;
+        $stock_restant[] = $stocksRepository->findEtat();
+        $sheet->setCellValue('A1', 'Produit');
+        $sheet->setCellValue('B1', 'Désignation');
+        $sheet->setCellValue('C1', 'Quantité restante');
+        $i = 2;
+        foreach($stocksRepository->findEtat() as $sto){
+            $sheet->setCellValue('A'.$i, $sto->getProduit());
+            $sheet->setCellValue('B'.$i, $sto->getProduit()->getDesignation());
+            $sheet->setCellValue('C'.$i, $this->reste($sto));
+            $i++;
+        }
+        $sheet->setTitle("Prima");
+        
+        // Create your Office 2007 Excel (XLSX Format)
+        $writer = new Xlsx($spreadsheet);
+        
+        $daty   = new \DateTime(); //this returns the current date time
+        $results = $daty->format('Y-m-d-H-i-s');
+        $krr    = explode('-', $results);
+        $results = implode("", $krr);
+        // Create a Temporary file in the system
+        $fileName = $results.'.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        
+        // Create the excel file in the tmp directory of the system
+        $writer->save($temp_file);
+        
+        // Return the excel file as an attachment
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+    
+    }
+
+    /**
+     * @Route("/", name="cs_base")
+     */
+    public function rediriger(){
+        if(!empty($_SESSION['username']))
+        {
+            return $this->redirectToRoute('saisie');
+        } else 
+        {
+            return $this->redirectToRoute('app_login');
+        }
     }
 }

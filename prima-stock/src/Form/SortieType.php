@@ -34,6 +34,7 @@ class SortieType extends AbstractType
                     'data-live-search' => true,
                 ],
             ])
+            ->add('reference')
             ->add('quantite', TextType::class)
             ->add('unite')
             ->add('projet')

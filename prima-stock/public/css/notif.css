@@ -17,7 +17,7 @@ table {
 }
 
 tr:nth-child(odd) {
-    background-color: rgb(68, 68, 114);
+    background-color: rgb(117, 117, 167);
 }
 
 td {
@@ -39,14 +39,20 @@ t td:last-child {
 
 th {
     border-top: none;
-    border-left: rgb(68, 68, 114);
-    border-width: 1px;
+    /* border-left: rgb(68, 68, 114); */
+    border-width: 10px;
     border-color: rgb(68, 68, 114);
     background-color: lightgrey;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 1px;
+    padding: 1px;
 }
 
 tr th {
     background-color: lightgrey;
+    border-width: 2px;
 }
 
 

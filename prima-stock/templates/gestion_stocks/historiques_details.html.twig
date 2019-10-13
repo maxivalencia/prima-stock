@@ -45,7 +45,17 @@
         {% endfor %}
         </tbody>
     </table>
-
+<br><br>
+                <tr>
+                    <th width="200">Piece-jointes : </th>
+                    <td>
+                        {# <a href="{{ asset('uploads/piecejointe/' ~ dossier.piecejointes) }}">{{ dossier.piecejointes }}</a> #}
+                        {% for piece in piecejointe %}
+                            {{ piece.nomFichier }}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+<br><br>
     <div class="navigation">
         {{ knp_pagination_render(stocks) }}
     </div>
