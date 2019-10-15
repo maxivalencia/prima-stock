@@ -39,9 +39,9 @@
     </div>
     <div class="row" style="margin-left:50px">
         <h3>Référence : {{ reference }}</h3>
-        <p><strong>Date et heure : </strong>{{ "now"|date('Y-m-d H:i:s') }}</p>
+        <p><strong>Date et heure : </strong>{{ datesaisie|date('Y-m-d H:m:s')  }}</p>
     {# <h3>Demandeur : </h3>#}
-        <p><strong>Opérateur : </strong>{{ operateur }}</p>
+        <p><strong>Opérateur : </strong>{{ operateur.nom }} {{ operateur.prenom }}</p>
         <p><strong>Objet : </strong>{{ objet }}</p>
         <p><strong>Ticket : </strong></p>
         <p><strong>Client : </strong>{{ client }}</p>
@@ -89,6 +89,19 @@
             </tr>
         {% endfor %}
         </tbody>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td align="center">
+                (Nom du demandeur)<br>
+                (Date et heure de la demande)
+            </td>
+            <td align="center">
+                {{ validateur.nom }} {{ validateur.prenom }}<br>
+                {{ datevalidation|date('Y-m-d H:m:s') }}
+            </td>
+        </tr>
     </table>
 </div>
 {% endblock %}

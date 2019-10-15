@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Projet;
+use App\Entity\Clients;
 use App\Form\ProjetType;
 use App\Repository\ProjetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\ClientsRepository;
 
 /**
  * @Route("/projet")
@@ -34,14 +36,17 @@ class ProjetController extends AbstractController
     /**
      * @Route("/new", name="projet_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ClientsRepository $clientsrepository): Response
     {
         $projet = new Projet();
+        $client = new Clients();
         $form = $this->createForm(ProjetType::class, $projet);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $client = $clientsrepository->findOneBy(["id" => 2]);
+            $projet->setClient($client);
             $entityManager->persist($projet);
             $entityManager->flush();
 

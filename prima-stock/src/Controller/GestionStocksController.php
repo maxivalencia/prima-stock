@@ -639,7 +639,7 @@ class GestionStocksController extends AbstractController
             $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
             $stock->setOperateur($user);
             $stock->setCauseAnnulation("Entrer standard");
-            $stock->setPiece($reference);
+            //$stock->setPiece($reference);
             $entityManager->persist($stock);
             $entityManager->flush();
 
@@ -691,7 +691,7 @@ class GestionStocksController extends AbstractController
             $user = $userRepository->findOneBy(["login" => $username->getUsername()]);
             $stock->setOperateur($user);
             $stock->setCauseAnnulation("Sortie standard");
-            $stock->setPiece($reference);
+            //$stock->setPiece($reference);
             $entityManager->persist($stock);
             if($stock->getAutreSource() != null){
                 $stock2 = $stock->getAutreSource();
@@ -852,12 +852,16 @@ class GestionStocksController extends AbstractController
         $pdfOptions->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($pdfOptions);
         $stock = new Stocks();
+        $operateur = new User();
+        $validateur = new User();
+        $date_saisie;
+        $date_validation;
         $reference = $ref;
         $client = "";
         $projet = "";
         $opera = $this->getUser();
         $utilisateur = $userRepository->findOneBy(["login" => $opera->getUsername()]);
-        $operateur = $utilisateur->getNom().' '.$utilisateur->getPrenom();
+        //$operateur = '';
         $pagination = $paginator->paginate(
             $stocksRepository->findGroupValidation($reference ), /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
@@ -868,6 +872,10 @@ class GestionStocksController extends AbstractController
             //$report = $report.' | le reste du produit '.$page->getProduit().' '.$this->reste($page);
             $client = $page->getClient();
             $projet = $page->getProjet();
+            $operateur = $page->getOperateur();
+            $validateur = $page->getValidateur();
+            $date_saisie = $page->getDateSaisie();
+            $date_validation = $page->getDateValidation();
             //$i++;
         }
        /*  return $this->render('gestion_stocks/historiques_details.html.twig',[
@@ -888,6 +896,9 @@ class GestionStocksController extends AbstractController
             'operateur' => $operateur,
             'objet' => $projet,
             'client' => $client,
+            'validateur' => $validateur,
+            'datesaisie' => $date_saisie,
+            'datevalidation' => $date_validation,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
