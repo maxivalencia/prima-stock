@@ -16,6 +16,14 @@
                 <th>Produit</th>
                 <th>Désignation</th>
                 <th>Quantite</th>
+                <th>Unité</th>
+                <th>Projet</th>
+                <th>Mouvement</th>
+                <th>Client</th>
+                <th>Saisisseur</th>
+                <th>Validateur</th>
+                <th>Autre source</th>
+                <th>Site</th>
                 {# <th>CauseAnnulation</th> #}
                 <th>Date Saisie</th>
                 {# <th>DateValidation</th> #}
@@ -29,6 +37,14 @@
                 <td>{{ stock.produit }}</td>
                 <td>{{ stock.produit.designation }}</td>
                 <td>{{ stock.quantite }}</td>
+                <td>{{ stock.unite }}</td>
+                <td>{{ stock.projet }}</td>
+                <td>{{ stock.mouvement }}</td>
+                <td>{{ stock.client }}</td>
+                <td>{{ stock.operateur }}</td>
+                <td>{{ stock.validateur }}</td>
+                <td>{{ stock.AutreSource }}</td>
+                <td>{{ stock.Site }}</td>
                 {# <td>{{ stock.causeAnnulation }}</td> #}
                 <td>{{ stock.dateSaisie ? stock.dateSaisie|date('Y-m-d H:i:s') : '' }}</td>
                 {# <td>{{ stock.dateValidation ? stock.dateValidation|date('Y-m-d H:i:s') : '' }}</td> #}
