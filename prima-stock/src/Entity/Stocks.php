@@ -26,6 +26,7 @@ class Stocks
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Projet", inversedBy="stocks")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $projet;
 

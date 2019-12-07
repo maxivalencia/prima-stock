@@ -40,6 +40,7 @@ class Clients
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Projet", mappedBy="client")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $projets;
 

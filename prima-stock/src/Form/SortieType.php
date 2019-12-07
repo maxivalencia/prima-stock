@@ -40,7 +40,9 @@ class SortieType extends AbstractType
             ->add('projet')
             //->add('mouvement')
             ->add('Site')
-            ->add('AutreSource')
+            ->add('AutreSource', null, [
+                'label' => 'Autre source'
+            ])
             ->add('Remarque')
             ->add('piece', HiddenType::class, [
                 'label' => 'Pièces-jointes',
